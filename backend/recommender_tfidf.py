@@ -10,7 +10,7 @@ with open("../data/products.json", "r", encoding="utf-8") as f:
 # Filter delisted products (marked by mark_delisted.py)
 products = [p for p in products if p.get("active", True)]
 
-# Parse clean_ingreds from stringified list → real list
+# Normalize clean_ingreds to a list
 for p in products:
     raw = p.get("clean_ingreds", "[]")
     if isinstance(raw, list):
@@ -63,7 +63,7 @@ CONCERN_TO_INGREDIENTS = {
                                "colloidal oatmeal", "aloe vera", "panthenol"],
 }
 
-# Annotate each product's active ingredients once at load time
+# Cache recognized active ingredients for faster scoring
 for p in products:
     p["active_ingredients"] = [
         ing.lower().strip()
@@ -72,8 +72,6 @@ for p in products:
     ]
 
 # ── TF-IDF matrix (built once over ALL products) ──────────────────────────────
-# IMPORTANT: tfidf_matrix rows correspond 1-to-1 with products list.
-# Never pass a subset to rec_hybrid — filter AFTER scoring using the original index.
 products_texts = [" ".join(p["clean_ingreds"]) for p in products]
 vectorizer = TfidfVectorizer()
 tfidf_matrix = vectorizer.fit_transform(products_texts)
@@ -91,17 +89,6 @@ def score_rule_based(product: dict, user: dict) -> float:
 
 def rec_hybrid(user: dict, _products_ignored=None, top_n: int = 12,
                alpha: float = 0.5, beta: float = 0.1):
-    """
-    Hybrid TF-IDF + rule-based recommender.
-
-    Price filtering:
-      - New frontend sends Price_Min / Price_Max (£ values from the slider).
-      - Old frontend sends Budget_Level ("Low"/"Medium"/"High") — still supported.
-
-    The _products_ignored parameter is accepted but ignored — scoring always uses
-    the full tfidf_matrix so indices stay aligned. Price filtering happens AFTER
-    scoring, inside this function.
-    """
     # ── Resolve price range ───────────────────────────────────────────────────
     if "Price_Min" in user or "Price_Max" in user:
         price_min = float(user.get("Price_Min", 0))

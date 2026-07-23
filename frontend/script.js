@@ -106,7 +106,6 @@ async function getRecommendations() {
                 ? `http://127.0.0.1:5000/proxy-image?url=${encodeURIComponent(rawImage)}`
                 : fallback;
 
-            // Price: data is in £, display as-is
             const rawPrice = String(product.price).trim();
             const displayPrice = rawPrice.startsWith("£") ? rawPrice : `£${rawPrice.replace(/[^0-9.]/g, "")}`;
 

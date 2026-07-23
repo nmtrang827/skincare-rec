@@ -193,7 +193,7 @@ def main():
             with open(DATA_PATH, "w", encoding="utf-8") as f:
                 json.dump(products, f, ensure_ascii=False, indent=2)
 
-            # Polite delay — LookFantastic has rate limiting
+            # LookFantastic has rate limiting
             if n < len(targets):
                 time.sleep(1.2)
 

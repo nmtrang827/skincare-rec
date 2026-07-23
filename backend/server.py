@@ -13,8 +13,6 @@ print(f"Loaded {len(products)}/{len(_all_products)} active products "
 app = Flask(__name__)
 CORS(app)
 
-# Known "active" ingredients to highlight — everything else in clean_ingreds
-# is a carrier/base. Extend this list as needed.
 ACTIVE_KEYWORDS = {
     "niacinamide", "retinol", "retinal", "tretinoin", "bakuchiol",
     "vitamin c", "ascorbic acid", "ascorbyl glucoside",
@@ -61,8 +59,6 @@ def extract_active_ingredients(clean_ingreds) -> list[str]:
 def recommend_tfidf():
     user = request.json
 
-    # Price filtering is handled inside rec_hybrid (in recommender_tfidf.py)
-    # so tfidf_matrix indices stay aligned with the full products list.
     recommendations = rec_hybrid(user, top_n=12, alpha=0.7)
     results = []
 

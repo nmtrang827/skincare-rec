@@ -33,8 +33,8 @@ HEADERS = {
     ),
 }
 TIMEOUT = 8
-WORKERS = 6      # concurrent requests — polite but not too slow
-SAVE_EVERY = 50  # write to disk every N completions
+WORKERS = 6      
+SAVE_EVERY = 50  
 
 
 def check_url(index: int, product: dict) -> tuple[int, bool, str]:
