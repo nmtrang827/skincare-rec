@@ -101,8 +101,9 @@ async function getRecommendations() {
         data.forEach((product, index) => {
             const fallback = typeFallbackImages[product.type] || typeFallbackImages["Other"];
             // Prefer real thcdn image; use type fallback if it's an Unsplash generic
-            const imageUrl = (product.image_url && !product.image_url.includes("unsplash.com"))
-                ? product.image_url
+            const rawImage = product.image_url || "";
+            const imageUrl = (rawImage && !rawImage.includes("unsplash.com"))
+                ? `http://127.0.0.1:5000/proxy-image?url=${encodeURIComponent(rawImage)}`
                 : fallback;
 
             // Price: data is in £, display as-is

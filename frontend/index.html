@@ -54,7 +54,7 @@
 
         /* ── Layout ─────────────────────────────── */
         .container {
-            max-width: 980px;
+            max-width: 1100px;
             margin: 40px auto 80px;
             padding: 0 20px;
             display: grid;
@@ -87,8 +87,8 @@
         /* ── Instructions ───────────────────────── */
         .instructions-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            grid-template-columns: 1fr;
+            gap: 10px;
         }
         .instr-item {
             display: flex;
@@ -314,7 +314,7 @@
         .btn-generate:active { transform: translateY(0); }
 
         /* ── Results ────────────────────────────── */
-        .results-section { padding: 32px; }
+        .results-section { padding: 32px 28px; }
         .results-section h2 {
             font-size: 1.1rem;
             font-weight: 700;
@@ -324,7 +324,7 @@
         }
         #results {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
 
@@ -437,6 +437,7 @@
             .card-body, .card-header, .price-section,
             .form-section, .results-section { padding-left: 20px; padding-right: 20px; }
             #results { grid-template-columns: 1fr; }
+            @media (max-width: 900px) { #results { grid-template-columns: repeat(2, 1fr); } }
         }
     </style>
 </head>
@@ -491,7 +492,7 @@
                         <span class="severity-badge" id="acneVal">0</span>
                     </div>
                     <input type="range" class="single-range" id="acne" min="0" max="10" value="0" step="1">
-                    <div class="severity-scale"><span>None</span><span>Mild</span><span>Moderate</span><span>Severe</span></div>
+                    <div class="severity-scale"><span>0 · None</span><span>3 · Mild</span><span>7 · Moderate</span><span>10 · Severe</span></div>
                 </div>
                 <div class="slider-group">
                     <div class="slider-row">
@@ -499,7 +500,7 @@
                         <span class="severity-badge" id="drynessVal">0</span>
                     </div>
                     <input type="range" class="single-range" id="dryness" min="0" max="10" value="0" step="1">
-                    <div class="severity-scale"><span>None</span><span>Mild</span><span>Moderate</span><span>Severe</span></div>
+                    <div class="severity-scale"><span>0 · None</span><span>3 · Mild</span><span>7 · Moderate</span><span>10 · Severe</span></div>
                 </div>
                 <div class="slider-group">
                     <div class="slider-row">
@@ -507,7 +508,7 @@
                         <span class="severity-badge" id="pigmentationVal">0</span>
                     </div>
                     <input type="range" class="single-range" id="pigmentation" min="0" max="10" value="0" step="1">
-                    <div class="severity-scale"><span>None</span><span>Mild</span><span>Moderate</span><span>Severe</span></div>
+                    <div class="severity-scale"><span>0 · None</span><span>3 · Mild</span><span>7 · Moderate</span><span>10 · Severe</span></div>
                 </div>
                 <div class="slider-group">
                     <div class="slider-row">
@@ -515,7 +516,7 @@
                         <span class="severity-badge" id="agingVal">0</span>
                     </div>
                     <input type="range" class="single-range" id="aging" min="0" max="10" value="0" step="1">
-                    <div class="severity-scale"><span>None</span><span>Mild</span><span>Moderate</span><span>Severe</span></div>
+                    <div class="severity-scale"><span>0 · None</span><span>3 · Mild</span><span>7 · Moderate</span><span>10 · Severe</span></div>
                 </div>
                 <div class="slider-group">
                     <div class="slider-row">
@@ -523,10 +524,10 @@
                         <span class="severity-badge" id="sensitivityVal">0</span>
                     </div>
                     <input type="range" class="single-range" id="sensitivity" min="0" max="10" value="0" step="1">
-                    <div class="severity-scale"><span>None</span><span>Mild</span><span>Moderate</span><span>Severe</span></div>
+                    <div class="severity-scale"><span>0 · None</span><span>3 · Mild</span><span>7 · Moderate</span><span>10 · Severe</span></div>
                 </div>
             </div>
-            <button class="btn-generate" onclick="getRecommendations()">Generate Recommendations</button>
+            <button class="btn-generate" onclick="getRecommendations()">Get Recommendations</button>
         </div>
     </div>
 

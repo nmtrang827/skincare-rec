@@ -1,29 +1,45 @@
-# import json
+import json
+import sys
+sys.path.insert(0, 'backend')
 
-# with open('data/products.json', 'r') as f:
-#     products = json.load(f)
+with open('data/products.json', 'r', encoding='utf-8') as f:
+    products = json.load(f)
 
-# print(f'Total products: {len(products)}')
-# products_with_images = [p for p in products if 'image_url' in p]
-# print(f'Products with image_url: {len(products_with_images)}')
+print(f'Total products: {len(products)}')
 
-# # Show first few products with images
-# for i, p in enumerate(products_with_images[:5]):
-#     print(f'{i+1}. {p["product_name"]} - {p.get("image_url", "No URL")}')
+# Image URL breakdown
+unsplash = [p for p in products if 'unsplash' in p.get('image_url', '')]
+thcdn    = [p for p in products if 'thcdn'    in p.get('image_url', '')]
+empty    = [p for p in products if not p.get('image_url', '')]
+print(f'Real images (thcdn):   {len(thcdn)}')
+print(f'Placeholders (unsplash): {len(unsplash)}')
+print(f'Empty:                 {len(empty)}')
 
-# # Show what products are being recommended
-# from backend.recommender_tfidf import rec_hybrid
-# user = {
-#     'Budget_Level': 'Medium',
-#     'Acne_Severity': 3,
-#     'Dryness_Severity': 5,
-#     'Pigmentation_Severity': 2,
-#     'Aging_Severity': 1,
-#     'Sensitivity_Severity': 2
-# }
+# Show a few of each
+print('\nSample real images:')
+for p in thcdn[:3]:
+    print(f'  {p["product_name"][:45]} -> {p["image_url"]}')
 
-# recommendations = rec_hybrid(user, products, top_n=3)
-# print('\nRecommended products:')
-# for product, score in recommendations:
-#     has_image = 'image_url' in product
-#     print(f'- {product["product_name"]} (has image: {has_image})')
+print('\nSample placeholders:')
+for p in unsplash[:3]:
+    print(f'  {p["product_name"][:45]} -> {p["image_url"]}')
+
+# Test recommender
+from recommender_tfidf import rec_hybrid
+
+user = {
+    'Price_Min': 0,
+    'Price_Max': 50,
+    'Acne_Severity': 3,
+    'Dryness_Severity': 5,
+    'Pigmentation_Severity': 2,
+    'Aging_Severity': 1,
+    'Sensitivity_Severity': 2,
+}
+
+recommendations = rec_hybrid(user, top_n=3)
+print('\nSample recommendations:')
+for product, score in recommendations:
+    img = product.get('image_url', '')
+    img_type = 'thcdn' if 'thcdn' in img else ('unsplash' if 'unsplash' in img else 'empty')
+    print(f'  [{img_type}] {product["product_name"][:45]} — £{product["price"]} (score {score:.3f})')
