@@ -1,493 +1,547 @@
 <!DOCTYPE html>
-<html>
-    <head>
-    <title>Skincare Product Recommender</title>
-        <style>
-            /* Import Google Fonts for better typography */
-            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skincare Recommender</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-            /* Reset and base styles */
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-            body {
-                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-                min-height: 100vh;
-                color: #1a202c;
-                line-height: 1.6;
-                margin: 0;
-            }
+        :root {
+            --brown: #8B5A3C;
+            --brown-light: #A0785A;
+            --brown-pale: rgba(139,90,60,0.08);
+            --brown-border: rgba(139,90,60,0.2);
+            --text: #1a202c;
+            --text-muted: #718096;
+            --text-mid: #4a5568;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --radius: 14px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.07);
+        }
 
-            .container {
-                max-width: 1000px;
-                margin: 0 auto;
-                padding: 20px;
-            }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
 
-            /* Header Section */
-            .header {
-                text-align: center;
-                padding: 100px 0 80px;
-                color: #1a202c;
-                background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-                border-bottom: 4px solid #8B5A3C;
-                position: relative;
-                overflow: hidden;
-            }
+        /* ── Header ─────────────────────────────── */
+        .header {
+            background: var(--white);
+            border-bottom: 3px solid var(--brown);
+            padding: 64px 24px 56px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--text);
+            margin-bottom: 14px;
+        }
+        .header p {
+            font-size: 1.05rem;
+            color: var(--text-mid);
+            max-width: 580px;
+            margin: 0 auto;
+        }
 
-            .header::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%238B5A3C" opacity="0.03"/><circle cx="75" cy="75" r="1" fill="%238B5A3C" opacity="0.03"/><circle cx="50" cy="10" r="0.5" fill="%238B5A3C" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-                pointer-events: none;
-            }
+        /* ── Layout ─────────────────────────────── */
+        .container {
+            max-width: 980px;
+            margin: 40px auto 80px;
+            padding: 0 20px;
+            display: grid;
+            gap: 24px;
+        }
 
-            .header h1 {
-                font-size: 3rem;
-                font-weight: 800;
-                margin-bottom: 20px;
-                letter-spacing: -1px;
-                color: #1a202c;
-                position: relative;
-                z-index: 1;
-            }
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
 
-            .header p {
-                font-size: 1.2rem;
-                color: #4a5568;
-                max-width: 700px;
-                margin: 0 auto;
-                line-height: 1.7;
-                position: relative;
-                z-index: 1;
-                font-weight: 400;
-            }
+        .card-header {
+            padding: 24px 32px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 28px;
+        }
+        .card-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            padding-bottom: 16px;
+            letter-spacing: -0.2px;
+        }
 
-            /* Main Content */
-            .main-content {
-                background: #ffffff;
-                border-radius: 16px;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.08), 0 4px 20px rgba(0,0,0,0.04);
-                overflow: hidden;
-                margin-bottom: 60px;
-                border: 1px solid #f1f5f9;
-            }
+        .card-body { padding: 0 32px 32px; }
 
-            /* Instructions */
-            .instructions {
-                background: linear-gradient(135deg, #fefefe 0%, #f8fafc 100%);
-                padding: 50px 40px;
-                border-bottom: 2px solid #f1f5f9;
-                position: relative;
-            }
+        /* ── Instructions ───────────────────────── */
+        .instructions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .instr-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.88rem;
+            color: var(--text-mid);
+            line-height: 1.5;
+        }
+        .instr-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--brown);
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+        .instr-item strong { color: var(--text); font-weight: 600; }
 
-            .instructions h3 {
-                color: #1a202c;
-                font-size: 1.25rem;
-                margin-bottom: 20px;
-                font-weight: 600;
-                letter-spacing: -0.2px;
-            }
+        /* ── Price Range Slider ─────────────────── */
+        .price-section { padding: 28px 32px 32px; }
+        .price-section h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--text);
+        }
 
-            .instructions ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
+        .price-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .price-label-row label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-mid);
+        }
+        .price-display {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--brown);
+            background: var(--brown-pale);
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--brown-border);
+        }
 
-            .instructions li {
-                margin: 12px 0;
-                padding-left: 16px;
-                position: relative;
-                color: #4a5568;
-                line-height: 1.5;
-            }
+        /* dual-range slider wrapper */
+        .range-wrap {
+            position: relative;
+            height: 36px;
+            margin-bottom: 8px;
+        }
+        .range-wrap input[type=range] {
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            background: transparent;
+            pointer-events: none;
+            -webkit-appearance: none;
+            appearance: none;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .range-track {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 5px;
+            background: var(--border);
+            border-radius: 3px;
+            z-index: 0;
+        }
+        .range-fill {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 5px;
+            background: linear-gradient(90deg, var(--brown), var(--brown-light));
+            border-radius: 3px;
+            z-index: 1;
+            pointer-events: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 2.5px solid var(--brown);
+            cursor: pointer;
+            pointer-events: all;
+            position: relative;
+            z-index: 3;
+            box-shadow: 0 2px 8px rgba(139,90,60,0.25);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 3px 12px rgba(139,90,60,0.35);
+        }
+        input[type=range]::-moz-range-thumb {
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 2.5px solid var(--brown);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(139,90,60,0.25);
+        }
+        .range-bounds {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
 
-            .instructions li::before {
-                content: "";
-                position: absolute;
-                left: 0;
-                top: 8px;
-                width: 6px;
-                height: 6px;
-                background: #8B5A3C;
-                border-radius: 50%;
-            }
+        /* ── Severity Sliders ───────────────────── */
+        .form-section { padding: 28px 32px 32px; }
+        .form-section h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--text);
+        }
 
-            .instructions li strong {
-                color: #2d3748;
-                font-weight: 600;
-            }
+        .sliders-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px 40px;
+        }
 
-            /* Form Section */
-            .form-section {
-                padding: 60px 40px;
-                background: #ffffff;
-                position: relative;
-            }
+        .slider-group { display: flex; flex-direction: column; gap: 8px; }
 
-            .form-section::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 80px;
-                height: 4px;
-                background: linear-gradient(90deg, #8B5A3C 0%, #A0785A 100%);
-                border-radius: 2px;
-            }
+        .slider-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .slider-row label {
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: var(--text-mid);
+        }
+        .severity-badge {
+            font-size: 0.8rem;
+            font-weight: 700;
+            min-width: 26px;
+            text-align: center;
+            color: var(--brown);
+            background: var(--brown-pale);
+            border-radius: 6px;
+            padding: 2px 8px;
+            border: 1px solid var(--brown-border);
+            transition: background 0.2s;
+        }
 
-            .form-section h2 {
-                color: #1a202c;
-                font-size: 1.5rem;
-                margin-bottom: 40px;
-                text-align: center;
-                font-weight: 600;
-                letter-spacing: -0.3px;
-            }
+        /* single range slider */
+        .single-range {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 5px;
+            background: var(--border);
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+        .single-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 2.5px solid var(--brown);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(139,90,60,0.2);
+            transition: transform 0.15s;
+        }
+        .single-range::-webkit-slider-thumb:hover { transform: scale(1.15); }
+        .single-range::-moz-range-thumb {
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 2.5px solid var(--brown);
+        }
 
-            .form-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 40px;
-                margin-bottom: 40px;
-            }
+        .severity-scale {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
 
-            .form-group {
-                display: flex;
-                flex-direction: column;
-                position: relative;
-            }
+        /* ── Generate Button ────────────────────── */
+        .btn-generate {
+            display: block;
+            width: 100%;
+            margin-top: 32px;
+            padding: 15px;
+            background: var(--white);
+            color: var(--text-mid);
+            border: 2px solid var(--brown);
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 0.2px;
+        }
+        .btn-generate:hover {
+            background: var(--brown);
+            color: var(--white);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(139,90,60,0.25);
+        }
+        .btn-generate:active { transform: translateY(0); }
 
-            .form-group.full-width {
-                grid-column: 1 / -1;
-            }
+        /* ── Results ────────────────────────────── */
+        .results-section { padding: 32px; }
+        .results-section h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--text);
+            text-align: center;
+        }
+        #results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
 
-            form label {
-                font-weight: 600;
-                margin-bottom: 10px;
-                color: #2d3748;
-                font-size: 0.95rem;
-                display: block;
-                letter-spacing: 0.3px;
-            }
+        .loading, .error, .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            border-radius: 12px;
+            background: var(--bg);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .error {
+            background: #fff5f5;
+            color: #c53030;
+            border: 1px solid #fed7d7;
+        }
 
-            form select, form input[type="number"] {
-                padding: 16px 20px;
-                border: 2px solid #e2e8f0;
-                border-radius: 12px;
-                font-size: 1rem;
-                transition: all 0.3s ease;
-                background: #ffffff;
-                font-family: inherit;
-                width: 100%;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            }
+        /* ── Product Cards ──────────────────────── */
+        .product-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fadeUp 0.5s ease forwards;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+        }
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .product-image {
+            height: 200px;
+            overflow: hidden;
+            background: var(--bg);
+        }
+        .product-image img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .product-card:hover .product-image img {
+            transform: scale(1.04);
+        }
+        .product-info { padding: 16px 18px 20px; }
+        .product-info h3 {
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+            line-height: 1.35;
+        }
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .product-type-tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--brown);
+            background: var(--brown-pale);
+            border: 1px solid var(--brown-border);
+            border-radius: 20px;
+            padding: 2px 10px;
+        }
+        .product-price {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text);
+        }
+        .product-ingredients {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+        .product-ingredients strong {
+            color: var(--text-mid);
+            font-weight: 600;
+        }
+        .product-link {
+            display: inline-block;
+            padding: 8px 18px;
+            background: var(--white);
+            color: var(--text-mid);
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.82rem;
+            border: 2px solid var(--brown);
+            transition: all 0.2s ease;
+        }
+        .product-link:hover {
+            background: var(--brown);
+            color: var(--white);
+        }
 
-            form select:hover, form input[type="number"]:hover {
-                border-color: #8B5A3C;
-                transform: translateY(-1px);
-                box-shadow: 0 4px 16px rgba(139, 90, 60, 0.1);
-            }
+        /* ── Responsive ─────────────────────────── */
+        @media (max-width: 640px) {
+            .instructions-grid { grid-template-columns: 1fr; }
+            .sliders-grid { grid-template-columns: 1fr; gap: 20px; }
+            .card-body, .card-header, .price-section,
+            .form-section, .results-section { padding-left: 20px; padding-right: 20px; }
+            #results { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
 
-            form select:focus, form input[type="number"]:focus {
-                border-color: #8B5A3C;
-                outline: none;
-                box-shadow: 0 0 0 4px rgba(139, 90, 60, 0.1), 0 4px 16px rgba(139, 90, 60, 0.1);
-                transform: translateY(-1px);
-            }
+<header class="header">
+    <h1>Skincare Recommender</h1>
+    <p>Tell us your skin concerns and budget — we'll find the right products for you.</p>
+</header>
 
-            form select:focus, form input[type="number"]:focus {
-                border-color: #8B5A3C;
-                outline: none;
-                box-shadow: 0 0 0 3px rgba(139, 90, 60, 0.1);
-            }
+<div class="container">
 
-            form button {
-                background: #ffffff;
-                color: #4a5568;
-                border: 2px solid #8B5A3C;
-                padding: 14px 28px;
-                font-size: 1rem;
-                font-weight: 600;
-                border-radius: 25px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                font-family: inherit;
-                width: 100%;
-                margin-top: 20px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            }
-
-            form button:hover {
-                background: #8B5A3C;
-                color: #ffffff;
-                transform: translateY(-1px);
-                box-shadow: 0 4px 12px rgba(139, 90, 60, 0.2);
-            }
-
-            /* Results Section */
-            .results-section {
-                padding: 50px 30px;
-                border-top: 1px solid #f0f0f0;
-            }
-
-            .results-section h2 {
-                color: #1a202c;
-                font-size: 1.5rem;
-                margin-bottom: 40px;
-                text-align: center;
-                font-weight: 600;
-                letter-spacing: -0.3px;
-            }
-
-            #results {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                gap: 20px;
-            }
-
-            .loading, .error, .no-results {
-                grid-column: 1 / -1;
-                text-align: center;
-                padding: 40px 20px;
-                background: #f8f9fa;
-                border-radius: 12px;
-                margin: 20px 0;
-            }
-
-            .error {
-                background: #fef2f7;
-                color: #c53030;
-                border: 1px solid #fed7d7;
-            }
-
-            /* Product Cards */
-            .product-card {
-                background: #ffffff;
-                border-radius: 16px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-                overflow: hidden;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                border: 1px solid #f1f5f9;
-                position: relative;
-                opacity: 0;
-                transform: translateY(20px);
-                animation: fadeInUp 0.6s ease forwards;
-            }
-
-            .product-card::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: linear-gradient(135deg, rgba(139, 90, 60, 0.02) 0%, transparent 50%);
-                opacity: 0;
-                transition: opacity 0.3s ease;
-                pointer-events: none;
-            }
-
-            .product-card:hover {
-                transform: translateY(-8px) scale(1.02);
-                box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 30px rgba(139, 90, 60, 0.1);
-            }
-
-            .product-card:hover::before {
-                opacity: 1;
-            }
-
-            .product-image {
-                height: 180px;
-                background-size: cover;
-                background-position: center;
-                background-color: #f8fafc;
-                position: relative;
-                overflow: hidden;
-            }
-
-            .product-image::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 70%);
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-
-            .product-card:hover .product-image::before {
-                opacity: 1;
-            }
-
-            @keyframes fadeInUp {
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            .product-info {
-                padding: 16px;
-            }
-
-            .product-info h3 {
-                margin: 0 0 8px 0;
-                font-size: 1.1rem;
-                color: #1a202c;
-                font-weight: 600;
-                line-height: 1.3;
-            }
-
-            .product-info p {
-                margin: 4px 0;
-                font-size: 0.9rem;
-                color: #718096;
-            }
-
-            .product-info .price {
-                font-weight: 600;
-                color: #2d3748;
-            }
-
-            .product-info a {
-                display: inline-block;
-                margin-top: 12px;
-                padding: 10px 20px;
-                background: #ffffff;
-                color: #4a5568;
-                text-decoration: none;
-                border-radius: 20px;
-                font-weight: 600;
-                font-size: 0.9rem;
-                transition: all 0.3s ease;
-                border: 2px solid #8B5A3C;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            }
-
-            .product-info a:hover {
-                background: #8B5A3C;
-                color: #ffffff;
-                transform: translateY(-1px);
-                box-shadow: 0 4px 12px rgba(139, 90, 60, 0.2);
-            }
-
-            /* Responsive Design */
-            @media (max-width: 768px) {
-                .header h1 {
-                    font-size: 2rem;
-                }
-
-                .header {
-                    padding: 60px 0 40px;
-                }
-
-                .form-grid {
-                    grid-template-columns: 1fr;
-                    gap: 16px;
-                }
-
-                #results {
-                    grid-template-columns: 1fr;
-                }
-
-                .container {
-                    padding: 20px 15px;
-                }
-
-                .form-section, .results-section, .instructions {
-                    padding: 24px 20px;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <header class="header">
-                <h1>Skincare Product Recommender</h1>
-                <p>Discover personalized skincare recommendations based on your unique skin profile and preferences.</p>
-            </header>
-
-            <main class="main-content">
-                <section class="instructions">
-                    <h3>Instructions</h3>
-                    <ul>
-                        <li><strong>Budget Selection:</strong> Choose your preferred price range for skincare products</li>
-                        <li><strong>Skin Assessment:</strong> Rate the severity of your skin concerns on a scale of 0-10:</li>
-                        <ul>
-                            <li>0 = No concern</li>
-                            <li>1-3 = Mild concern</li>
-                            <li>4-6 = Moderate concern</li>
-                            <li>7-9 = Severe concern</li>
-                            <li>10 = Very severe concern</li>
-                        </ul>
-                        <li>Click "Generate Recommendations" to receive personalized product suggestions</li>
-                        <li><em>Note: Product prices displayed may vary from current retailer pricing</em></li>
-                    </ul>
-                </section>
-
-                <section class="form-section">
-                    <h2>Skin Profile Assessment</h2>
-                    <form>
-                        <div class="form-grid">
-                            <div class="form-group full-width">
-                                <label for="budget">Budget Range</label>
-                                <select id="budget">
-                                    <option value="Low">Low ($0-20)</option>
-                                    <option value="Medium" selected>Medium ($20-50)</option>
-                                    <option value="High">High ($50+)</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="acne">Acne Severity (0-10)</label>
-                                <input type="number" id="acne" min="0" max="10" value="0" placeholder="0">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="dryness">Dryness Severity (0-10)</label>
-                                <input type="number" id="dryness" min="0" max="10" value="0" placeholder="0">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="pigmentation">Pigmentation Severity (0-10)</label>
-                                <input type="number" id="pigmentation" min="0" max="10" value="0" placeholder="0">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="aging">Aging Severity (0-10)</label>
-                                <input type="number" id="aging" min="0" max="10" value="0" placeholder="0">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="sensitivity">Sensitivity Severity (0-10)</label>
-                                <input type="number" id="sensitivity" min="0" max="10" value="0" placeholder="0">
-                            </div>
-                        </div>
-
-                        <button type="button" onclick="getRecommendations()">Generate Recommendations</button>
-                    </form>
-                </section>
-
-                <section class="results-section">
-                    <h2>Recommended Products</h2>
-                    <div id="results"></div>
-                </section>
-            </main>
+    <!-- Instructions -->
+    <div class="card">
+        <div class="card-header"><h2>How it works</h2></div>
+        <div class="card-body">
+            <div class="instructions-grid">
+                <div class="instr-item"><span class="instr-dot"></span><span>Set your <strong>price range</strong> using the slider below</span></div>
+                <div class="instr-item"><span class="instr-dot"></span><span>Rate each <strong>skin concern</strong> from 0 (none) to 10 (severe)</span></div>
+                <div class="instr-item"><span class="instr-dot"></span><span>Hit <strong>Generate</strong> — we rank 1,000+ products for your profile</span></div>
+                <div class="instr-item"><span class="instr-dot"></span><span>Click <strong>View Product</strong> for current pricing on LookFantastic</span></div>
+            </div>
         </div>
+    </div>
 
-        <script src="script.js"></script>
-    </body>
+    <!-- Price Range -->
+    <div class="card">
+        <div class="price-section">
+            <h2>Budget</h2>
+            <div class="price-label-row">
+                <label>Price range</label>
+                <span class="price-display" id="priceDisplay">£0 – £230</span>
+            </div>
+            <div class="range-wrap">
+                <div class="range-track"></div>
+                <div class="range-fill" id="rangeFill"></div>
+                <input type="range" id="priceMin" min="0" max="230" value="0" step="1">
+                <input type="range" id="priceMax" min="0" max="230" value="230" step="1">
+            </div>
+            <div class="range-bounds"><span>£0</span><span>£230</span></div>
+        </div>
+    </div>
+
+    <!-- Skin Concerns -->
+    <div class="card">
+        <div class="form-section">
+            <h2>Skin Profile</h2>
+            <div class="sliders-grid">
+                <div class="slider-group">
+                    <div class="slider-row">
+                        <label>Acne</label>
+                        <span class="severity-badge" id="acneVal">0</span>
+                    </div>
+                    <input type="range" class="single-range" id="acne" min="0" max="10" value="0" step="1">
+                    <div class="severity-scale"><span>None</span><span>Mild</span><span>Moderate</span><span>Severe</span></div>
+                </div>
+                <div class="slider-group">
+                    <div class="slider-row">
+                        <label>Dryness</label>
+                        <span class="severity-badge" id="drynessVal">0</span>
+                    </div>
+                    <input type="range" class="single-range" id="dryness" min="0" max="10" value="0" step="1">
+                    <div class="severity-scale"><span>None</span><span>Mild</span><span>Moderate</span><span>Severe</span></div>
+                </div>
+                <div class="slider-group">
+                    <div class="slider-row">
+                        <label>Pigmentation</label>
+                        <span class="severity-badge" id="pigmentationVal">0</span>
+                    </div>
+                    <input type="range" class="single-range" id="pigmentation" min="0" max="10" value="0" step="1">
+                    <div class="severity-scale"><span>None</span><span>Mild</span><span>Moderate</span><span>Severe</span></div>
+                </div>
+                <div class="slider-group">
+                    <div class="slider-row">
+                        <label>Aging</label>
+                        <span class="severity-badge" id="agingVal">0</span>
+                    </div>
+                    <input type="range" class="single-range" id="aging" min="0" max="10" value="0" step="1">
+                    <div class="severity-scale"><span>None</span><span>Mild</span><span>Moderate</span><span>Severe</span></div>
+                </div>
+                <div class="slider-group">
+                    <div class="slider-row">
+                        <label>Sensitivity</label>
+                        <span class="severity-badge" id="sensitivityVal">0</span>
+                    </div>
+                    <input type="range" class="single-range" id="sensitivity" min="0" max="10" value="0" step="1">
+                    <div class="severity-scale"><span>None</span><span>Mild</span><span>Moderate</span><span>Severe</span></div>
+                </div>
+            </div>
+            <button class="btn-generate" onclick="getRecommendations()">Generate Recommendations</button>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div class="card">
+        <div class="results-section">
+            <h2>Recommended Products</h2>
+            <div id="results">
+                <div class="no-results">Fill in your skin profile above and click Generate.</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
 </html>

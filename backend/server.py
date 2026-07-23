@@ -60,7 +60,30 @@ def extract_active_ingredients(clean_ingreds) -> list[str]:
 @app.route("/recommend_tfidf", methods=["POST"])
 def recommend_tfidf():
     user = request.json
-    recommendations = rec_hybrid(user, products, top_n=8, alpha=0.7)
+
+    # Price range filter — new slider sends Price_Min / Price_Max in £.
+    # Falls back to Budget_Level for backwards compatibility.
+    price_min = float(user.get("Price_Min", 0))
+    price_max = float(user.get("Price_Max", 9999))
+
+    # If old Budget_Level is sent instead, map it to price bands
+    if "Budget_Level" in user and "Price_Min" not in user:
+        budget_map = {"Low": (0, 20), "Medium": (20, 50), "High": (50, 9999)}
+        price_min, price_max = budget_map.get(user["Budget_Level"], (0, 9999))
+
+    # Pre-filter products to the selected price range before scoring
+    def parse_price(p):
+        try:
+            return float(str(p.get("price", "0")).replace("\xa3", "").replace("£", "").strip())
+        except ValueError:
+            return 0.0
+
+    price_filtered = [p for p in products if price_min <= parse_price(p) <= price_max]
+
+    if not price_filtered:
+        return jsonify([])
+
+    recommendations = rec_hybrid(user, price_filtered, top_n=8, alpha=0.7)
     results = []
 
     for product, score in recommendations:
