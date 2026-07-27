@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consultation — Clarity</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/consultation.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo">Clarity</a>
+    <ul class="nav-links">
+      <li>
+        <a href="index.html" class="nav-back">
+          ← Back to home
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Progress bar: sits below the nav, spans full width -->
+  <div class="progress-bar-track" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="4" aria-label="Consultation progress">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+
+  <!-- Step counter label -->
+  <div class="step-counter-wrap">
+    <span class="step-counter" id="stepCounter">Step 1 of 4</span>
+  </div>
+
+  <!-- ── Main consultation area ── -->
+  <main class="consultation-main" id="consultationMain">
+
+    <!-- ── Step 1: Choose path ── -->
+    <section class="consult-step" data-step="1" aria-labelledby="step1-heading">
+      <div class="step-inner">
+        <p class="step-eyebrow">Getting started</p>
+        <h1 class="step-heading" id="step1-heading">
+          How would you like<br>to begin?
+        </h1>
+        <p class="step-sub">
+          The quiz takes about 2 minutes and helps us personalise your results. 
+          You can also skip straight to picking your concerns manually.
+        </p>
+
+        <div class="path-cards">
+          <button class="path-card path-card--recommended" id="chooseQuiz" aria-describedby="quiz-desc">
+            <span class="path-badge">Recommended</span>
+            <span class="path-icon" aria-hidden="true">✦</span>
+            <h2 class="path-title">Quick quiz</h2>
+            <p class="path-desc" id="quiz-desc">
+              A few simple questions so we understand your skin properly.
+            </p>
+          </button>
+
+          <button class="path-card" id="chooseManual" aria-describedby="manual-desc">
+            <span class="path-icon" aria-hidden="true">↓</span>
+            <h2 class="path-title">Skip quiz</h2>
+            <p class="path-desc" id="manual-desc">
+              Go straight to rating your skin concerns yourself.
+            </p>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Step 2: Quiz (placeholder) ── -->
+    <section class="consult-step" data-step="2" aria-labelledby="step2-heading" hidden>
+      <div class="step-inner">
+        <p class="step-eyebrow">Step 2 — Skin quiz</p>
+        <h1 class="step-heading" id="step2-heading">
+          Tell us about your skin
+        </h1>
+        <p class="step-sub">Quiz questions will go here in the next step.</p>
+
+        <div class="step-nav">
+          <button class="btn-ghost" id="backFromQuiz">← Back</button>
+          <button class="btn-primary" id="nextFromQuiz">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Step 3: Skin concerns (placeholder) ── -->
+    <section class="consult-step" data-step="3" aria-labelledby="step3-heading" hidden>
+      <div class="step-inner">
+        <p class="step-eyebrow">Step 3 — Skin concerns</p>
+        <h1 class="step-heading" id="step3-heading">
+          Rate your concerns
+        </h1>
+        <p class="step-sub">Concern sliders will go here in a future step.</p>
+
+        <div class="step-nav">
+          <button class="btn-ghost" id="backFromConcerns">← Back</button>
+          <button class="btn-primary" id="nextFromConcerns">See my products →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Step 4: AI scan (placeholder) ── -->
+    <section class="consult-step" data-step="4" aria-labelledby="step4-heading" hidden>
+      <div class="step-inner">
+        <p class="step-eyebrow">Optional — AI scan</p>
+        <h1 class="step-heading" id="step4-heading">
+          Analyse your skin
+        </h1>
+        <p class="step-sub">AI scan UI will go here in a future step.</p>
+
+        <div class="step-nav">
+          <button class="btn-ghost" id="backFromScan">← Back</button>
+          <button class="btn-primary" id="nextFromScan">Get my results →</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/consultation.js"></script>
+</body>
+</html>
