@@ -1,0 +1,179 @@
+/* ============================================================
+   index.css — landing page styles only
+   Extends base.css. Do not put shared styles here.
+   ============================================================ */
+
+/* ── Hero ──────────────────────────────────────────────────── */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px var(--space-xl) var(--space-2xl);
+  position: relative;
+  overflow: hidden;
+
+  /* Subtle gradient that shifts from off-white to blush-tint */
+  background: linear-gradient(160deg, var(--off-white) 55%, var(--blush-tint) 100%);
+}
+
+/* The soft ambient orb — gives depth without being distracting */
+.hero-orb {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(
+    circle at center,
+    rgba(192, 132, 160, 0.13) 0%,
+    transparent 65%
+  );
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -58%);
+  pointer-events: none;
+
+  /* Slow, gentle pulse animation */
+  animation: orb-pulse 6s ease-in-out infinite;
+}
+
+@keyframes orb-pulse {
+  0%, 100% { transform: translate(-50%, -58%) scale(1);   opacity: 1; }
+  50%       { transform: translate(-50%, -58%) scale(1.06); opacity: 0.8; }
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 600px;
+  position: relative; /* sits above the orb */
+  z-index: 1;
+
+  /* Fade up on load */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fade-up 0.7s ease 0.1s forwards;
+}
+
+@keyframes fade-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--blush);
+  margin-bottom: var(--space-lg);
+}
+
+.hero-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.12;
+  color: var(--slate);
+  margin-bottom: var(--space-lg);
+}
+
+/* The italic "understood." in blush */
+.hero-heading em {
+  font-style: italic;
+  color: var(--blush);
+}
+
+.hero-sub {
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--steel);
+  max-width: 440px;
+  margin: 0 auto var(--space-xl);
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+/* ── How it works ──────────────────────────────────────────── */
+.how-section {
+  padding: var(--space-2xl) var(--space-xl);
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.how-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  text-align: center;
+  color: var(--slate);
+  margin-bottom: var(--space-xl);
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.step-card {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl) var(--space-lg);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.step-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.step-num {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--blush);
+  margin-bottom: var(--space-md);
+}
+
+.step-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--slate);
+  margin-bottom: var(--space-sm);
+}
+
+.step-body {
+  font-size: 0.9rem;
+  color: var(--steel);
+  line-height: 1.65;
+}
+
+.how-cta {
+  text-align: center;
+  padding-top: var(--space-md);
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .site-nav { padding: 0 var(--space-lg); }
+
+  .hero { padding: 80px var(--space-lg) var(--space-xl); }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 0 auto var(--space-xl);
+  }
+
+  .how-section { padding: var(--space-xl) var(--space-lg); }
+}
