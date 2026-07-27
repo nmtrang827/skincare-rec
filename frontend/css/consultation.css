@@ -1,0 +1,194 @@
+/* ============================================================
+   consultation.css — multi-step consultation page
+   Extends base.css.
+   ============================================================ */
+
+/* ── Progress bar ──────────────────────────────────────────── */
+.progress-bar-track {
+  position: fixed;
+  top: 60px; /* sits flush below the nav */
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--border-color);
+  z-index: 99;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blush), #d4a0bc);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 25%; /* starts at step 1 of 4 */
+}
+
+/* ── Step counter ──────────────────────────────────────────── */
+.step-counter-wrap {
+  position: fixed;
+  top: 72px; /* below nav + progress bar */
+  right: var(--space-xl);
+  z-index: 98;
+}
+
+.step-counter {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--steel);
+  letter-spacing: 0.3px;
+}
+
+/* ── Main layout ───────────────────────────────────────────── */
+.consultation-main {
+  min-height: 100svh;
+  padding-top: 100px; /* clears nav + progress bar */
+  padding-bottom: var(--space-2xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Each step ─────────────────────────────────────────────── */
+.consult-step {
+  width: 100%;
+  max-width: 680px;
+  padding: 0 var(--space-xl);
+}
+
+/* Animate the step in when it becomes visible */
+.consult-step:not([hidden]) {
+  animation: step-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes step-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.step-inner {
+  width: 100%;
+}
+
+/* ── Step typography ───────────────────────────────────────── */
+.step-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--blush);
+  margin-bottom: var(--space-md);
+}
+
+.step-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--slate);
+  margin-bottom: var(--space-md);
+}
+
+.step-sub {
+  font-size: 1rem;
+  color: var(--steel);
+  line-height: 1.7;
+  max-width: 520px;
+  margin-bottom: var(--space-xl);
+}
+
+/* ── Path selection cards (Step 1) ─────────────────────────── */
+.path-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.path-card {
+  position: relative;
+  background: #fff;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl) var(--space-lg);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--transition-base),
+              transform var(--transition-base),
+              box-shadow var(--transition-base);
+  box-shadow: var(--shadow-card);
+}
+
+.path-card:hover {
+  border-color: var(--blush);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+.path-card:focus-visible {
+  outline: 2px solid var(--blush);
+  outline-offset: 3px;
+}
+
+/* The recommended card has a tinted background */
+.path-card--recommended {
+  border-color: rgba(192, 132, 160, 0.4);
+  background: linear-gradient(145deg, #fff 70%, var(--blush-tint) 100%);
+}
+
+.path-card--recommended:hover {
+  border-color: var(--blush);
+}
+
+.path-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--blush);
+  background: var(--blush-tint);
+  border: 1px solid rgba(192, 132, 160, 0.3);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  margin-bottom: var(--space-lg);
+}
+
+.path-icon {
+  display: block;
+  font-size: 24px;
+  color: var(--slate);
+  margin-bottom: var(--space-sm);
+}
+
+.path-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--slate);
+  margin-bottom: var(--space-sm);
+}
+
+.path-desc {
+  font-size: 0.9rem;
+  color: var(--steel);
+  line-height: 1.6;
+}
+
+/* ── Step navigation (back / next buttons) ─────────────────── */
+.step-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-color);
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .consult-step { padding: 0 var(--space-lg); }
+
+  .path-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .step-counter-wrap { right: var(--space-lg); }
+}
