@@ -10,4 +10,5 @@ python server.py
 
 
 Frontend
-Open `frontend/index.html` in your web browser.
+cd frontend
+live-server --port=5173

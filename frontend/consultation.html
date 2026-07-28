@@ -68,17 +68,18 @@
     </section>
 
     <!-- ── Step 2: Quiz (placeholder) ── -->
-    <section class="consult-step" data-step="2" aria-labelledby="step2-heading" hidden>
+    <section class="consult-step" data-step="2" hidden>
       <div class="step-inner">
-        <p class="step-eyebrow">Step 2 — Skin quiz</p>
-        <h1 class="step-heading" id="step2-heading">
-          Tell us about your skin
-        </h1>
-        <p class="step-sub">Quiz questions will go here in the next step.</p>
+        <p class="step-eyebrow"> Step 2 — Skin quiz </p>
+        <div class="quiz-progress">
+          <span id="quizCounter"></span>
+        </div>
+        <h2 class="quiz-question" id="quizQuestion"></h2>
+        <div class="quiz-answers" id="quizAnswers"> </div>
 
         <div class="step-nav">
-          <button class="btn-ghost" id="backFromQuiz">← Back</button>
-          <button class="btn-primary" id="nextFromQuiz">Continue →</button>
+          <button class="btn-ghost" id="backFromQuiz"> ← Back </button>
+          <button class="btn-primary" id="nextFromQuiz"> Continue → </button>
         </div>
       </div>
     </section>
@@ -90,7 +91,101 @@
         <h1 class="step-heading" id="step3-heading">
           Rate your concerns
         </h1>
-        <p class="step-sub">Concern sliders will go here in a future step.</p>
+        <p class="step-sub">
+            We've estimated your skin concerns.
+            Adjust them if needed.
+        </p>
+        <div class="concern-list">
+          <div class="concern-item">
+            <div class="concern-header">
+                <label for="drynessSlider">Dryness</label>
+                <span class="slider-value" id="drynessValue">0</span>
+            </div>
+            <input
+                id="drynessSlider"
+                class="concern-slider"
+                type="range"
+                min="0"
+                max="10"
+                step="0.5">
+            <div class="slider-labels">
+                <span>None</span>
+                <span>Severe</span>
+            </div>
+          </div>
+
+          <div class="concern-item">
+            <div class="concern-header">
+                <label for="drynessSlider">Dryness</label>
+                <span class="slider-value" id="drynessValue">0</span>
+            </div>
+            <input
+                id="drynessSlider"
+                class="concern-slider"
+                type="range"
+                min="0"
+                max="10"
+                step="0.5">
+            <div class="slider-labels">
+                <span>None</span>
+                <span>Severe</span>
+            </div>
+          </div>
+          
+          <div class="concern-item">
+            <div class="concern-header">
+                <label for="sensitivitySlider">Sensitivity</label>
+                <span class="slider-value" id="sensitivityValue">0</span>
+            </div>
+            <input
+                id="sensitivitySlider"
+                class="concern-slider"
+                type="range"
+                min="0"
+                max="10"
+                step="0.5">
+            <div class="slider-labels">
+                <span>None</span>
+                <span>Severe</span>
+            </div>
+          </div>
+
+          <div class="concern-item">
+            <div class="concern-header">
+                <label for="pigmentationSlider">Pigmentation</label>
+                <span class="slider-value" id="pigmentationValue">0</span>
+            </div>
+            <input
+                id="pigmentationSlider"
+                class="concern-slider"
+                type="range"
+                min="0"
+                max="10"
+                step="0.5">
+            <div class="slider-labels">
+                <span>None</span>
+                <span>Severe</span>
+            </div>
+          </div>
+
+          <div class="concern-item">
+            <div class="concern-header">
+                <label for="agingSlider">Acne</label>
+                <span class="slider-value" id="agingValue">0</span>
+            </div>
+            <input
+                id="agingSlider"
+                class="concern-slider"
+                type="range"
+                min="0"
+                max="10"
+                step="0.5">
+            <div class="slider-labels">
+                <span>None</span>
+                <span>Severe</span>
+            </div>
+          </div>
+        </div>
 
         <div class="step-nav">
           <button class="btn-ghost" id="backFromConcerns">← Back</button>
@@ -117,6 +212,6 @@
 
   </main>
 
-  <script src="js/consultation.js"></script>
+  <script type="module" src="js/consultation.js"></script>
 </body>
 </html>
