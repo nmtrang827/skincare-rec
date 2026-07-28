@@ -263,4 +263,12 @@ document.getElementById('skipAI').addEventListener('click', fetchAndNavigate);
 document.getElementById('chooseAI').addEventListener('click', fetchAndNavigate); // AI wired later
 
 // ── Init ─────────────────────────────────────────────────────
-goToStep(1);
+// If a ?step= param exists (e.g. from results.html), jump there.
+// Otherwise default to step 1.
+const params = new URLSearchParams(window.location.search);
+const startStep = parseInt(params.get('step'));
+if (startStep && startStep >= 1 && startStep <= state.totalSteps) {
+  goToStep(startStep);
+} else {
+  goToStep(1);
+}

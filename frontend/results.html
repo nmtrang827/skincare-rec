@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Results — SkinRx</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/results.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo">Skin<span>Rx</span></a>
+    <ul class="nav-links">
+        <li>
+            <a href="index.html" class="nav-back">Home</a>
+        </li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <div class="results-layout">
+
+      <!-- ── Sidebar ── -->
+      <aside class="sidebar">
+
+        <!-- Skin profile card -->
+        <div class="card">
+            <p class="card-title">Your skin profile</p>
+            <div class="concern-bars" id="concernBars">
+            <!-- Rendered by results.js -->
+            </div>
+        </div>
+
+        <!-- Budget card -->
+        <div class="card">
+            <p class="card-title">Budget</p>
+            <div class="budget-row">
+            <span class="budget-label">Max per product</span>
+            <span class="budget-value" id="budgetDisplay">£50</span>
+            </div>
+            <input
+            type="range"
+            class="budget-slider"
+            id="budgetSliderResults"
+            min="10"
+            max="230"
+            value="50"
+            step="5"
+            />
+            <div class="slider-bounds">
+            <span>£10</span>
+            <span>£230</span>
+            </div>
+            <button class="btn-refresh" id="refreshResults">
+            Refresh products →
+            </button>
+        </div>
+
+        <!-- Recommended ingredients card -->
+        <div class="card">
+            <p class="card-title">Key ingredients for you</p>
+            <div class="ingredient-chips" id="ingredientChips">
+            <!-- Rendered by results.js -->
+            </div>
+        </div>
+
+        </aside>
+
+      <!-- ── Main: products ── -->
+      <section class="products-section">
+        <div class="products-header">
+          <h1 class="products-title">Recommended products</h1>
+          <span class="products-count" id="productsCount"></span>
+        </div>
+        <a href="consultation.html?step=3" class="back-to-consultation">
+            ← Adjust my profile
+        </a>
+        <div class="products-grid" id="productsGrid">
+          <!-- Rendered by results.js -->
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script type="module" src="js/results.js"></script>
+</body>
+</html>
