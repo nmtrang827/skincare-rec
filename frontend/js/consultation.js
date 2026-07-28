@@ -11,18 +11,20 @@ const state = {
   currentStep: 1,
   path: null,
   totalSteps: 4,
+
   quizIndex: 0,
   quizAnswers: {},
-  priceMin: 0,
-  priceMax: 230,
 
   concernScores: {
-    Acne_Severity: 0,
-    Dryness_Severity: 0,
-    Sensitivity_Severity: 0,
-    Pigmentation_Severity: 0,
-    Aging_Severity: 0
-  }
+      Acne_Severity: 0,
+      Dryness_Severity: 0,
+      Sensitivity_Severity: 0,
+      Pigmentation_Severity: 0,
+      Aging_Severity: 0
+  },
+
+  priceMin: 0,
+  priceMax: 230
 };
 
 // ── DOM references ───────────────────────────────────────────
@@ -151,6 +153,7 @@ document.getElementById("chooseQuiz").addEventListener("click", () => {
 
 document.getElementById('chooseManual').addEventListener('click', () => {
   state.path = 'manual';
+  fillConcernSliders();
   // Manual path skips the quiz — goes straight to concerns (step 3)
   goToStep(3);
 });
@@ -174,10 +177,10 @@ document.getElementById('nextFromConcerns').addEventListener('click', () => goTo
 
 // ── Step 4: AI scan navigation ───────────────────────────────
 document.getElementById('backFromScan').addEventListener('click', () => goToStep(3));
-document.getElementById('nextFromScan').addEventListener('click', () => {
-  // Placeholder: will navigate to results.html once that page exists
-  window.location.href = 'results.html';
-});
+// document.getElementById('nextFromScan').addEventListener('click', () => {
+//   // Placeholder: will navigate to results.html once that page exists
+//   window.location.href = 'results.html';
+// });
 
 
 acneSlider.addEventListener("input", () => {
