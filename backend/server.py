@@ -4,6 +4,10 @@ from flask_cors import CORS
 import requests
 from recommender_tfidf import rec_hybrid, products as _all_products
 
+from skin_analyzer import analyze_image
+import os
+import uuid
+
 # Filter out delisted products (marked by mark_delisted.py).
 # "active" defaults to True for products not yet checked.
 products = [p for p in _all_products if p.get("active", True)]
@@ -121,6 +125,30 @@ def proxy_image():
     except requests.RequestException as e:
         return jsonify({"error": f"Failed to fetch image: {e}"}), 500
 
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static', 'uploads')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+@app.route("/analyze", methods=["POST"])
+def analyze():
+    if 'image' not in request.files:
+        return jsonify({'error': 'No image provided'}), 400
+
+    file = request.files['image']
+    if file.filename == '':
+        return jsonify({'error': 'Empty filename'}), 400
+
+    # Save with unique name to avoid collisions
+    ext = os.path.splitext(file.filename)[1].lower()
+    unique_name = f"{uuid.uuid4().hex}{ext}"
+    save_path = os.path.join(UPLOAD_FOLDER, unique_name)
+    file.save(save_path)
+
+    try:
+        result = analyze_image(save_path)
+        return jsonify(result)
+    finally:
+        if os.path.exists(save_path):
+            os.remove(save_path)
 
 if __name__ == "__main__":
     app.run(debug=True)

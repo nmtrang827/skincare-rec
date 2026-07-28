@@ -1,0 +1,5 @@
+# .gitignore
+backend/ml/*.pt       
+backend/static/uploads/ 
+*.cache
+runs/
