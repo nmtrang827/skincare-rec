@@ -338,3 +338,43 @@
     font-size:.8rem;
     color:var(--steel);
 }
+
+.budget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.range-bounds {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--steel);
+  margin-top: 6px;
+  opacity: 0.7;
+}
+
+.range-wrap input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2.5px solid var(--blush);
+  box-shadow: 0 2px 8px rgba(192, 132, 160, 0.25);
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.range-wrap input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2.5px solid var(--blush);
+  box-shadow: 0 2px 8px rgba(192, 132, 160, 0.25);
+  pointer-events: all;
+  cursor: pointer;
+}

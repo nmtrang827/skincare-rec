@@ -84,7 +84,7 @@
       </div>
     </section>
 
-    <!-- ── Step 3: Skin concerns (placeholder) ── -->
+    <!-- ── Step 3: Skin concerns  ── -->
     <section class="consult-step" data-step="3" aria-labelledby="step3-heading" hidden>
       <div class="step-inner">
         <p class="step-eyebrow">Step 3 — Skin concerns</p>
@@ -98,11 +98,11 @@
         <div class="concern-list">
           <div class="concern-item">
             <div class="concern-header">
-                <label for="drynessSlider">Dryness</label>
-                <span class="slider-value" id="drynessValue">0</span>
+                <label for="acneSlider">Acne</label>
+                <span class="slider-value" id="acneValue">0</span>
             </div>
             <input
-                id="drynessSlider"
+                id="acneSlider"
                 class="concern-slider"
                 type="range"
                 min="0"
@@ -170,7 +170,7 @@
 
           <div class="concern-item">
             <div class="concern-header">
-                <label for="agingSlider">Acne</label>
+                <label for="agingSlider">Aging</label>
                 <span class="slider-value" id="agingValue">0</span>
             </div>
             <input
@@ -185,6 +185,28 @@
                 <span>Severe</span>
             </div>
           </div>
+
+          <div class="concern-item">
+            <div class="concern-header">
+                <label for="budgetSlider">Budget</label>
+                <span class="slider-value" id="budgetValue">£50</span>
+            </div>
+            <p class="budget-help">
+                Maximum you'd like to spend per product.
+            </p>
+            <input
+                id="budgetSlider"
+                class="concern-slider"
+                type="range"
+                min="10"
+                max="230"
+                value="50"
+                step="5">
+            <div class="slider-labels">
+                <span>Affordable</span>
+                <span>Premium</span>
+            </div>
+          </div>
         </div>
 
         <div class="step-nav">
@@ -194,18 +216,39 @@
       </div>
     </section>
 
-    <!-- ── Step 4: AI scan (placeholder) ── -->
+    <!-- ── Step 4: AI scan  ── -->
     <section class="consult-step" data-step="4" aria-labelledby="step4-heading" hidden>
       <div class="step-inner">
-        <p class="step-eyebrow">Optional — AI scan</p>
+        <p class="step-eyebrow">Optional</p>
         <h1 class="step-heading" id="step4-heading">
-          Analyse your skin
+          Want a more accurate result?
         </h1>
-        <p class="step-sub">AI scan UI will go here in a future step.</p>
+        <p class="step-sub">
+          Upload a photo and our AI will estimate your acne severity automatically.
+          Your photo is never stored.
+        </p>
+
+        <div class="path-cards">
+          <button class="path-card path-card--recommended" id="chooseAI">
+            <span class="path-badge">More accurate</span>
+            <span class="path-icon" aria-hidden="true">◎</span>
+            <h2 class="path-title">Scan my skin</h2>
+            <p class="path-desc">Upload a selfie — takes 10 seconds.</p>
+          </button>
+          <button class="path-card" id="skipAI">
+            <span class="path-icon" aria-hidden="true">→</span>
+            <h2 class="path-title">Skip scan</h2>
+            <p class="path-desc">Use your quiz or manual scores as-is.</p>
+          </button>
+        </div>
+
+        <div class="results-loading" id="resultsLoading" hidden>
+          <div class="loading-spinner" aria-hidden="true"></div>
+          <p class="loading-text">Finding your products…</p>
+        </div>
 
         <div class="step-nav">
           <button class="btn-ghost" id="backFromScan">← Back</button>
-          <button class="btn-primary" id="nextFromScan">Get my results →</button>
         </div>
       </div>
     </section>

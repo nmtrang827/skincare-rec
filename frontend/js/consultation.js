@@ -13,6 +13,8 @@ const state = {
   totalSteps: 4,
   quizIndex: 0,
   quizAnswers: {},
+  priceMin: 0,
+  priceMax: 230,
 
   concernScores: {
     Acne_Severity: 0,
@@ -154,8 +156,14 @@ document.getElementById('chooseManual').addEventListener('click', () => {
 });
 
 // ── Step 2: quiz navigation ──────────────────────────────────
-document.getElementById('backFromQuiz').addEventListener('click', () => goToStep(1));
-// document.getElementById('nextFromQuiz').addEventListener('click', () => goToStep(3));
+document.getElementById('backFromQuiz').addEventListener('click', () => {
+  if (state.quizIndex > 0) {
+    state.quizIndex--;
+    renderQuizQuestion();
+  } else {
+    goToStep(1);
+  }
+});
 
 // ── Step 3: concerns navigation ─────────────────────────────
 document.getElementById('backFromConcerns').addEventListener('click', () => {
@@ -196,6 +204,60 @@ agingSlider.addEventListener("input", () => {
     agingValue.textContent = agingSlider.value;
     state.concernScores.Aging_Severity = Number(agingSlider.value);
 });
+
+// ── Price range ───────────────────────────────────────────────
+const budgetSlider = document.getElementById("budgetSlider");
+const budgetValue = document.getElementById("budgetValue");
+
+budgetSlider.addEventListener("input", () => {
+
+    budgetValue.textContent = `£${budgetSlider.value}`;
+
+    state.priceMin = 0;
+    state.priceMax = Number(budgetSlider.value);
+
+});
+
+// ── Fetch & navigate ──────────────────────────────────────────
+const resultsLoading = document.getElementById('resultsLoading');
+
+async function fetchAndNavigate() {
+  resultsLoading.hidden = false;
+  document.getElementById('backFromScan').disabled = true;
+
+  const payload = {
+    ...state.concernScores,
+    Price_Min: state.priceMin,
+    Price_Max: state.priceMax,
+  };
+
+  try {
+    const res = await fetch('http://127.0.0.1:5000/recommend_tfidf', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
+
+    const products = await res.json();
+    sessionStorage.setItem('skincare_results', JSON.stringify(products));
+    sessionStorage.setItem('skincare_profile', JSON.stringify(payload));
+    window.location.href = 'results.html';
+
+  } catch (err) {
+    resultsLoading.hidden = true;
+    document.getElementById('backFromScan').disabled = false;
+    const el = document.createElement('p');
+    el.className = 'fetch-error';
+    el.textContent = "Couldn't reach the server. Make sure the backend is running.";
+    resultsLoading.before(el);
+    console.error(err);
+  }
+}
+
+// ── Step 4 listeners ──────────────────────────────────────────
+document.getElementById('skipAI').addEventListener('click', fetchAndNavigate);
+document.getElementById('chooseAI').addEventListener('click', fetchAndNavigate); // AI wired later
 
 // ── Init ─────────────────────────────────────────────────────
 goToStep(1);
