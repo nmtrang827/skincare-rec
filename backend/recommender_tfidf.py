@@ -4,7 +4,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # ── Load products ─────────────────────────────────────────────────────────────
-with open("../data/products.json", "r", encoding="utf-8") as f:
+import os
+_data_path = os.path.join(os.path.dirname(__file__), "data", "products.json")
+_data_path = os.path.normpath(_data_path)
+
+with open(_data_path, "r", encoding="utf-8") as f:
     products = json.load(f)
 
 # Filter delisted products (marked by mark_delisted.py)
