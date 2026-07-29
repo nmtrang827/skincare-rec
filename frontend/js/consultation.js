@@ -1,12 +1,5 @@
-// consultation.js
-// Controls the multi-step consultation flow.
-// Pattern: one source-of-truth object (state), 
-// one function to render from that state (goToStep).
-
-// ── State ────────────────────────────────────────────────────
-// Everything the consultation knows is stored here.
-// We'll add more fields as we build each step.
 import { quiz } from "./quiz.js";
+import { API_BASE } from './api.js';
 const state = {
   currentStep: 1,
   path: null,
@@ -238,7 +231,7 @@ async function fetchAndNavigate() {
   };
 
   try {
-    const res = await fetch('https://skincare-rec.onrender.com/recommend_tfidf', {
+    const res = await fetch(`${API_BASE}/recommend_tfidf`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -289,7 +282,7 @@ skinImageInput.addEventListener('change', async () => {
     const formData = new FormData();
     formData.append('image', file);
 
-    const res = await fetch('https://skincare-rec.onrender.com/analyze', {
+    const res = await fetch(`${API_BASE}/analyze`, {
       method: 'POST',
       body: formData,
       // No Content-Type header — browser sets it automatically with FormData

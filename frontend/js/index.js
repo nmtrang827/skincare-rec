@@ -1,6 +1,3 @@
-// index.js — landing page behaviour only
-// Keeping this minimal: one scroll effect, no frameworks needed.
-
 // ── Nav: add background when user scrolls down ──────────────
 // Without this, the frosted nav can look odd at the very top
 // against the hero gradient. On scroll, it solidifies slightly.
