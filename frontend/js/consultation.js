@@ -235,7 +235,7 @@ async function fetchAndNavigate() {
   };
 
   try {
-    const res = await fetch('http://127.0.0.1:5000/recommend_tfidf', {
+    const res = await fetch('https://skincare-rec.onrender.com/recommend_tfidf', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -286,7 +286,7 @@ skinImageInput.addEventListener('change', async () => {
     const formData = new FormData();
     formData.append('image', file);
 
-    const res = await fetch('http://127.0.0.1:5000/analyze', {
+    const res = await fetch('https://skincare-rec.onrender.com/analyze', {
       method: 'POST',
       body: formData,
       // No Content-Type header — browser sets it automatically with FormData

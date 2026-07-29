@@ -120,7 +120,7 @@ function renderProducts(products) {
     const fallback = FALLBACK_IMAGES[product.type] || FALLBACK_IMAGES["Other"];
     const rawImage = product.image_url || "";
     const imageUrl = (rawImage && !rawImage.includes("unsplash.com"))
-      ? `http://127.0.0.1:5000/proxy-image?url=${encodeURIComponent(rawImage)}`
+      ? `https://skincare-rec.onrender.com/proxy-image?url=${encodeURIComponent(rawImage)}`
       : fallback;
 
     const rawPrice = String(product.price).trim();
@@ -180,7 +180,7 @@ refreshBtn.addEventListener('click', async () => {
   };
 
   try {
-    const res = await fetch('http://127.0.0.1:5000/recommend_tfidf', {
+    const res = await fetch('https://skincare-rec.onrender.com/recommend_tfidf', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedProfile),
