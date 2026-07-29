@@ -26,7 +26,9 @@
 }
 
 @media (max-width: 900px) {
-  .sidebar { position: static; }
+  .sidebar {
+    position: static;
+  }
 }
 
 /* ── Card ─────────────────────────────────────────────────────── */
@@ -35,7 +37,7 @@
   border: 1px solid #EEF0F3;
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
 .card-title {
@@ -107,7 +109,7 @@
   border-radius: 100px;
   background: #F9F0F4;
   color: #C084A0;
-  border: 1px solid rgba(192,132,160,0.2);
+  border: 1px solid rgba(192, 132, 160, 0.2);
   white-space: nowrap;
 }
 
@@ -150,11 +152,15 @@
 }
 
 @media (max-width: 1100px) {
-  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 600px) {
-  .products-grid { grid-template-columns: 1fr; }
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ── Product card ─────────────────────────────────────────────── */
@@ -173,12 +179,15 @@
 
 .product-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.09);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.09);
   border-color: #DDE0E6;
 }
 
 @keyframes fadeUp {
-  to { opacity: 1; transform: translateY(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ── Product image ────────────────────────────────────────────── */
@@ -228,7 +237,7 @@
   font-weight: 600;
   color: #C084A0;
   background: #F9F0F4;
-  border: 1px solid rgba(192,132,160,0.2);
+  border: 1px solid rgba(192, 132, 160, 0.2);
   border-radius: 100px;
   padding: 3px 10px;
   letter-spacing: 0.02em;
@@ -312,7 +321,7 @@
   background: #F9F0F4;
   padding: 3px 12px;
   border-radius: 100px;
-  border: 1px solid rgba(192,132,160,0.2);
+  border: 1px solid rgba(192, 132, 160, 0.2);
 }
 
 .budget-slider {
@@ -336,7 +345,7 @@
   background: #ffffff;
   border: 2px solid #C084A0;
   cursor: pointer;
-  box-shadow: 0 1px 6px rgba(192,132,160,0.3);
+  box-shadow: 0 1px 6px rgba(192, 132, 160, 0.3);
   transition: transform 0.15s ease;
 }
 
@@ -369,7 +378,7 @@
 .btn-refresh:hover {
   background: #2D3E52;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(30,42,58,0.2);
+  box-shadow: 0 4px 12px rgba(30, 42, 58, 0.2);
 }
 
 .btn-refresh:disabled {

@@ -8,35 +8,35 @@
 /* ── Design tokens ─────────────────────────────────────────── */
 :root {
   /* Palette */
-  --slate:        #1E2A3A;
-  --slate-mid:    #2D3E52;
-  --blush:        #C084A0;
-  --blush-tint:   #F9F0F4;
-  --off-white:    #FAFAFA;
-  --steel:        #6B7A8D;
+  --slate: #1E2A3A;
+  --slate-mid: #2D3E52;
+  --blush: #C084A0;
+  --blush-tint: #F9F0F4;
+  --off-white: #FAFAFA;
+  --steel: #6B7A8D;
   --border-color: #E4D9E1;
 
   /* Typography */
-  --font-body:    'DM Sans', -apple-system, sans-serif;
+  --font-body: 'DM Sans', -apple-system, sans-serif;
   --font-display: 'Playfair Display', Georgia, serif;
 
   /* Spacing scale */
-  --space-xs:  4px;
-  --space-sm:  8px;
-  --space-md:  16px;
-  --space-lg:  24px;
-  --space-xl:  40px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
   --space-2xl: 64px;
 
   /* Radii */
-  --radius-sm:  8px;
-  --radius-md:  14px;
-  --radius-lg:  24px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
   --radius-pill: 100px;
 
   /* Shadows */
-  --shadow-card:    0 2px 12px rgba(30, 42, 58, 0.06), 0 1px 3px rgba(30, 42, 58, 0.04);
-  --shadow-hover:   0 8px 32px rgba(30, 42, 58, 0.10), 0 2px 8px rgba(30, 42, 58, 0.06);
+  --shadow-card: 0 2px 12px rgba(30, 42, 58, 0.06), 0 1px 3px rgba(30, 42, 58, 0.04);
+  --shadow-hover: 0 8px 32px rgba(30, 42, 58, 0.10), 0 2px 8px rgba(30, 42, 58, 0.06);
 
   /* Transitions */
   --transition-fast: 150ms ease;
@@ -44,7 +44,9 @@
 }
 
 /* ── Reset ─────────────────────────────────────────────────── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -65,9 +67,16 @@ body {
   min-height: 100vh;
 }
 
-img, video { display: block; max-width: 100%; }
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
 
-a { color: inherit; text-decoration: none; }
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
 button {
   font-family: var(--font-body);
@@ -117,7 +126,9 @@ button {
   transition: color var(--transition-fast);
 }
 
-.nav-links a:hover { color: var(--slate); }
+.nav-links a:hover {
+  color: var(--slate);
+}
 
 /* ── Shared button styles ──────────────────────────────────── */
 .btn-primary {
@@ -140,7 +151,9 @@ button {
   box-shadow: 0 6px 20px rgba(30, 42, 58, 0.2);
 }
 
-.btn-primary:active { transform: translateY(0); }
+.btn-primary:active {
+  transform: translateY(0);
+}
 
 .btn-ghost {
   display: inline-flex;
@@ -162,8 +175,10 @@ button {
 /* ── Utility classes ───────────────────────────────────────── */
 .visually-hidden {
   position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -172,7 +187,10 @@ button {
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
@@ -181,7 +199,7 @@ button {
 /* ── Footer ─────────────────────────────────────────────────── */
 .footer {
   background: #1E2A3A;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255, 255, 255, 0.6);
   padding: 48px 0 32px;
   margin-top: auto;
 }
@@ -217,7 +235,7 @@ button {
 
 .footer-tagline {
   font-size: 0.82rem;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .footer-links {
@@ -232,7 +250,7 @@ button {
   gap: 6px;
   font-size: 0.85rem;
   font-weight: 500;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -243,11 +261,11 @@ button {
 
 .footer-copy {
   font-size: 0.75rem;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255, 255, 255, 0.3);
 }
 
 .footer-author {
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.5);
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -263,6 +281,7 @@ body {
   flex-direction: column;
 }
 
-main, .container {
+main,
+.container {
   flex: 1;
 }

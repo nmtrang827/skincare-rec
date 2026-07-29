@@ -16,11 +16,11 @@ const state = {
   quizAnswers: {},
 
   concernScores: {
-      Acne_Severity: 0,
-      Dryness_Severity: 0,
-      Sensitivity_Severity: 0,
-      Pigmentation_Severity: 0,
-      Aging_Severity: 0
+    Acne_Severity: 0,
+    Dryness_Severity: 0,
+    Sensitivity_Severity: 0,
+    Pigmentation_Severity: 0,
+    Aging_Severity: 0
   },
 
   priceMin: 0,
@@ -29,10 +29,10 @@ const state = {
 
 // ── DOM references ───────────────────────────────────────────
 // Grab these once at the top — cheaper than querying every time.
-const allSteps    = document.querySelectorAll('.consult-step');
+const allSteps = document.querySelectorAll('.consult-step');
 const progressFill = document.getElementById('progressFill');
-const stepCounter  = document.getElementById('stepCounter');
-const progressBar  = document.querySelector('.progress-bar-track');
+const stepCounter = document.getElementById('stepCounter');
+const progressBar = document.querySelector('.progress-bar-track');
 
 const quizCounter = document.getElementById("quizCounter");
 const quizQuestion = document.getElementById("quizQuestion");
@@ -80,75 +80,75 @@ function goToStep(n) {
 }
 
 function renderQuizQuestion() {
-    const q = quiz[state.quizIndex];
-    quizCounter.textContent = `Question ${state.quizIndex + 1} of ${quiz.length}`;
-    quizQuestion.textContent = q.question;
-    quizAnswers.innerHTML = "";
-    q.answers.forEach(answer => {
-        const button = document.createElement("button");
-        button.className = "quiz-answer";
-        button.textContent = answer.text;
-        button.onclick = () => {
-            state.quizAnswers[q.id] = answer.value;
-            if (state.quizIndex < quiz.length - 1) {
-                state.quizIndex++;
-                renderQuizQuestion();
-            } else {
-                calculateQuizScores();
-                fillConcernSliders();
-                goToStep(3);
-            }
-        };
-        quizAnswers.appendChild(button);
-    });
+  const q = quiz[state.quizIndex];
+  quizCounter.textContent = `Question ${state.quizIndex + 1} of ${quiz.length}`;
+  quizQuestion.textContent = q.question;
+  quizAnswers.innerHTML = "";
+  q.answers.forEach(answer => {
+    const button = document.createElement("button");
+    button.className = "quiz-answer";
+    button.textContent = answer.text;
+    button.onclick = () => {
+      state.quizAnswers[q.id] = answer.value;
+      if (state.quizIndex < quiz.length - 1) {
+        state.quizIndex++;
+        renderQuizQuestion();
+      } else {
+        calculateQuizScores();
+        fillConcernSliders();
+        goToStep(3);
+      }
+    };
+    quizAnswers.appendChild(button);
+  });
 }
 
 function calculateQuizScores() {
-    const totals = {};
-    const weights = {};
-    quiz.forEach(question => {
-        const answer = state.quizAnswers[question.id];
-        if (answer === undefined) return;
-        if (!totals[question.category]) {
-            totals[question.category] = 0;
-            weights[question.category] = 0;
-        }
-        totals[question.category] += answer * question.weight;
-        weights[question.category] += question.weight;
-    });
+  const totals = {};
+  const weights = {};
+  quiz.forEach(question => {
+    const answer = state.quizAnswers[question.id];
+    if (answer === undefined) return;
+    if (!totals[question.category]) {
+      totals[question.category] = 0;
+      weights[question.category] = 0;
+    }
+    totals[question.category] += answer * question.weight;
+    weights[question.category] += question.weight;
+  });
 
-    // Convert weighted totals into final 0–10 scores
-    Object.keys(totals).forEach(category => {
-        state.concernScores[category] = Number((totals[category] / weights[category]).toFixed(1));
-    });
+  // Convert weighted totals into final 0–10 scores
+  Object.keys(totals).forEach(category => {
+    state.concernScores[category] = Number((totals[category] / weights[category]).toFixed(1));
+  });
 
-    console.log("Quiz answers:");
-    console.log(state.quizAnswers);
+  console.log("Quiz answers:");
+  console.log(state.quizAnswers);
 
-    console.log("Calculated concern scores:");
-    console.log(state.concernScores);
+  console.log("Calculated concern scores:");
+  console.log(state.concernScores);
 }
 
 function fillConcernSliders() {
-    acneSlider.value = state.concernScores.Acne_Severity;
-    drynessSlider.value = state.concernScores.Dryness_Severity;
-    sensitivitySlider.value = state.concernScores.Sensitivity_Severity;
-    pigmentationSlider.value = state.concernScores.Pigmentation_Severity;
-    agingSlider.value = state.concernScores.Aging_Severity;
+  acneSlider.value = state.concernScores.Acne_Severity;
+  drynessSlider.value = state.concernScores.Dryness_Severity;
+  sensitivitySlider.value = state.concernScores.Sensitivity_Severity;
+  pigmentationSlider.value = state.concernScores.Pigmentation_Severity;
+  agingSlider.value = state.concernScores.Aging_Severity;
 
-    acneValue.textContent = acneSlider.value;
-    drynessValue.textContent = drynessSlider.value;
-    sensitivityValue.textContent = sensitivitySlider.value;
-    pigmentationValue.textContent = pigmentationSlider.value;
-    agingValue.textContent = agingSlider.value;
+  acneValue.textContent = acneSlider.value;
+  drynessValue.textContent = drynessSlider.value;
+  sensitivityValue.textContent = sensitivitySlider.value;
+  pigmentationValue.textContent = pigmentationSlider.value;
+  agingValue.textContent = agingSlider.value;
 }
 
 // ── Step 1: path selection ───────────────────────────────────
 document.getElementById("chooseQuiz").addEventListener("click", () => {
-    state.path = "quiz";
-    state.quizIndex = 0;
-    goToStep(2);
-    renderQuizQuestion();
+  state.path = "quiz";
+  state.quizIndex = 0;
+  goToStep(2);
+  renderQuizQuestion();
 });
 
 document.getElementById('chooseManual').addEventListener('click', () => {
@@ -184,28 +184,28 @@ document.getElementById('backFromScan').addEventListener('click', () => goToStep
 
 
 acneSlider.addEventListener("input", () => {
-    acneValue.textContent = acneSlider.value;
-    state.concernScores.Acne_Severity = Number(acneSlider.value);
+  acneValue.textContent = acneSlider.value;
+  state.concernScores.Acne_Severity = Number(acneSlider.value);
 });
 
 drynessSlider.addEventListener("input", () => {
-    drynessValue.textContent = drynessSlider.value;
-    state.concernScores.Dryness_Severity = Number(drynessSlider.value);
+  drynessValue.textContent = drynessSlider.value;
+  state.concernScores.Dryness_Severity = Number(drynessSlider.value);
 });
 
 sensitivitySlider.addEventListener("input", () => {
-    sensitivityValue.textContent = sensitivitySlider.value;
-    state.concernScores.Sensitivity_Severity = Number(sensitivitySlider.value);
+  sensitivityValue.textContent = sensitivitySlider.value;
+  state.concernScores.Sensitivity_Severity = Number(sensitivitySlider.value);
 });
 
 pigmentationSlider.addEventListener("input", () => {
-    pigmentationValue.textContent = pigmentationSlider.value;
-    state.concernScores.Pigmentation_Severity = Number(pigmentationSlider.value);
+  pigmentationValue.textContent = pigmentationSlider.value;
+  state.concernScores.Pigmentation_Severity = Number(pigmentationSlider.value);
 });
 
 agingSlider.addEventListener("input", () => {
-    agingValue.textContent = agingSlider.value;
-    state.concernScores.Aging_Severity = Number(agingSlider.value);
+  agingValue.textContent = agingSlider.value;
+  state.concernScores.Aging_Severity = Number(agingSlider.value);
 });
 
 // ── Price range ───────────────────────────────────────────────
@@ -214,10 +214,10 @@ const budgetValue = document.getElementById("budgetValue");
 
 budgetSlider.addEventListener("input", () => {
 
-    budgetValue.textContent = `£${budgetSlider.value}`;
+  budgetValue.textContent = `£${budgetSlider.value}`;
 
-    state.priceMin = 0;
-    state.priceMax = Number(budgetSlider.value);
+  state.priceMin = 0;
+  state.priceMax = Number(budgetSlider.value);
 
 });
 
@@ -264,7 +264,7 @@ document.getElementById('skipAI').addEventListener('click', fetchAndNavigate);
 
 // ── AI scan — file picker + YOLO inference ────────────────────
 const skinImageInput = document.getElementById('skinImageInput');
-const scanStatus     = document.getElementById('scanStatus');
+const scanStatus = document.getElementById('scanStatus');
 const scanStatusText = document.getElementById('scanStatusText');
 
 // Clicking the card triggers the hidden file input

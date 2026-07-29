@@ -22,11 +22,9 @@
   position: absolute;
   width: 520px;
   height: 520px;
-  background: radial-gradient(
-    circle at center,
-    rgba(192, 132, 160, 0.13) 0%,
-    transparent 65%
-  );
+  background: radial-gradient(circle at center,
+      rgba(192, 132, 160, 0.13) 0%,
+      transparent 65%);
   border-radius: 50%;
   top: 50%;
   left: 50%;
@@ -38,14 +36,24 @@
 }
 
 @keyframes orb-pulse {
-  0%, 100% { transform: translate(-50%, -58%) scale(1);   opacity: 1; }
-  50%       { transform: translate(-50%, -58%) scale(1.06); opacity: 0.8; }
+
+  0%,
+  100% {
+    transform: translate(-50%, -58%) scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translate(-50%, -58%) scale(1.06);
+    opacity: 0.8;
+  }
 }
 
 .hero-content {
   text-align: center;
   max-width: 600px;
-  position: relative; /* sits above the orb */
+  position: relative;
+  /* sits above the orb */
   z-index: 1;
 
   /* Fade up on load */
@@ -55,7 +63,10 @@
 }
 
 @keyframes fade-up {
-  to { opacity: 1; transform: translateY(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-eyebrow {
@@ -165,9 +176,13 @@
 
 /* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .site-nav { padding: 0 var(--space-lg); }
+  .site-nav {
+    padding: 0 var(--space-lg);
+  }
 
-  .hero { padding: 80px var(--space-lg) var(--space-xl); }
+  .hero {
+    padding: 80px var(--space-lg) var(--space-xl);
+  }
 
   .steps-grid {
     grid-template-columns: 1fr;
@@ -175,5 +190,7 @@
     margin: 0 auto var(--space-xl);
   }
 
-  .how-section { padding: var(--space-xl) var(--space-lg); }
+  .how-section {
+    padding: var(--space-xl) var(--space-lg);
+  }
 }

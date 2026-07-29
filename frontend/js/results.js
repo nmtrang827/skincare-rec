@@ -6,23 +6,23 @@ import { CONCERN_TO_INGREDIENTS } from './ingredientMap.js';
 
 // ── Constants ─────────────────────────────────────────────────
 const FALLBACK_IMAGES = {
-  "Moisturiser":  "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=400&fit=crop&q=80",
-  "Moisturizer":  "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=400&fit=crop&q=80",
-  "Serum":        "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=600&h=400&fit=crop&q=80",
-  "Cleanser":     "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&h=400&fit=crop&q=80",
-  "Toner":        "https://images.unsplash.com/photo-1601049541271-25cf5f3bfa72?w=600&h=400&fit=crop&q=80",
-  "Mask":         "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=600&h=400&fit=crop&q=80",
-  "Oil":          "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600&h=400&fit=crop&q=80",
-  "Sunscreen":    "https://images.unsplash.com/photo-1556228841-a3c527ebefe5?w=600&h=400&fit=crop&q=80",
-  "Other":        "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&h=400&fit=crop&q=80",
+  "Moisturiser": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=400&fit=crop&q=80",
+  "Moisturizer": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=400&fit=crop&q=80",
+  "Serum": "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=600&h=400&fit=crop&q=80",
+  "Cleanser": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&h=400&fit=crop&q=80",
+  "Toner": "https://images.unsplash.com/photo-1601049541271-25cf5f3bfa72?w=600&h=400&fit=crop&q=80",
+  "Mask": "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=600&h=400&fit=crop&q=80",
+  "Oil": "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600&h=400&fit=crop&q=80",
+  "Sunscreen": "https://images.unsplash.com/photo-1556228841-a3c527ebefe5?w=600&h=400&fit=crop&q=80",
+  "Other": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&h=400&fit=crop&q=80",
 };
 
 const CONCERN_LABELS = {
-  Acne_Severity:         "Acne",
-  Dryness_Severity:      "Dryness",
-  Sensitivity_Severity:  "Sensitivity",
+  Acne_Severity: "Acne",
+  Dryness_Severity: "Dryness",
+  Sensitivity_Severity: "Sensitivity",
   Pigmentation_Severity: "Pigmentation",
-  Aging_Severity:        "Aging",
+  Aging_Severity: "Aging",
 };
 
 // ── Read sessionStorage ───────────────────────────────────────
@@ -38,7 +38,7 @@ if (!raw.results || !raw.profile) {
 }
 
 const products = JSON.parse(raw.results);
-const profile  = JSON.parse(raw.profile);
+const profile = JSON.parse(raw.profile);
 
 // ── Derive recommended ingredients from profile ───────────────
 // For each concern where severity > 2, collect its ingredient list.
@@ -73,7 +73,7 @@ function renderConcernBars(profile) {
 
   const html = Object.entries(CONCERN_LABELS).map(([key, label]) => {
     const value = profile[key] ?? 0;
-    const pct   = (value / 10) * 100;
+    const pct = (value / 10) * 100;
 
     return `
       <div class="concern-bar-item">
@@ -92,7 +92,7 @@ function renderConcernBars(profile) {
 
 // ── Render: ingredient chips ──────────────────────────────────
 function renderIngredientChips(profile) {
-  const container  = document.getElementById('ingredientChips');
+  const container = document.getElementById('ingredientChips');
   const ingredients = getRecommendedIngredients(profile);
 
   container.innerHTML = ingredients
@@ -102,7 +102,7 @@ function renderIngredientChips(profile) {
 
 // ── Render: product cards ─────────────────────────────────────
 function renderProducts(products) {
-  const grid  = document.getElementById('productsGrid');
+  const grid = document.getElementById('productsGrid');
   const count = document.getElementById('productsCount');
 
   count.textContent = `${products.length} products`;
@@ -117,13 +117,13 @@ function renderProducts(products) {
   }
 
   grid.innerHTML = products.map((product, index) => {
-    const fallback   = FALLBACK_IMAGES[product.type] || FALLBACK_IMAGES["Other"];
-    const rawImage   = product.image_url || "";
-    const imageUrl   = (rawImage && !rawImage.includes("unsplash.com"))
+    const fallback = FALLBACK_IMAGES[product.type] || FALLBACK_IMAGES["Other"];
+    const rawImage = product.image_url || "";
+    const imageUrl = (rawImage && !rawImage.includes("unsplash.com"))
       ? `http://127.0.0.1:5000/proxy-image?url=${encodeURIComponent(rawImage)}`
       : fallback;
 
-    const rawPrice    = String(product.price).trim();
+    const rawPrice = String(product.price).trim();
     const displayPrice = rawPrice.startsWith("£") ? rawPrice : `£${rawPrice.replace(/[^0-9.]/g, "")}`;
 
     const delay = index * 0.05;
@@ -157,12 +157,12 @@ function renderProducts(products) {
 
 // ── Budget slider ─────────────────────────────────────────────
 // Lets the user adjust budget and re-fetch without retaking quiz.
-const budgetSlider  = document.getElementById('budgetSliderResults');
+const budgetSlider = document.getElementById('budgetSliderResults');
 const budgetDisplay = document.getElementById('budgetDisplay');
-const refreshBtn    = document.getElementById('refreshResults');
+const refreshBtn = document.getElementById('refreshResults');
 
 // Initialise slider to the value used in the consultation
-budgetSlider.value  = profile.Price_Max ?? 50;
+budgetSlider.value = profile.Price_Max ?? 50;
 budgetDisplay.textContent = `£${budgetSlider.value}`;
 
 budgetSlider.addEventListener('input', () => {
