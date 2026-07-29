@@ -18,8 +18,10 @@ def get_db():
 try:
     from skin_analyzer import analyze_image
     YOLO_AVAILABLE = True
-except Exception:
+    print("YOLO loaded successfully")
+except Exception as e:
     YOLO_AVAILABLE = False
+    print(f"YOLO failed to load: {e}")
 
 # Filter out delisted products (marked by mark_delisted.py).
 # "active" defaults to True for products not yet checked.
