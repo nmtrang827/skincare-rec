@@ -281,39 +281,75 @@ main,
 }
 
 
-/* ── Print styles ─────────────────────────────────────────────
+/* ── Print styles ─────────────────────────────────────────── */
 @media print {
+
   .nav,
+  .site-nav,
   .results-actions,
   .back-to-consultation,
   .btn-refresh,
   .budget-slider,
   .slider-bounds,
-  .footer {
+  /* .budget-row, */
+  .footer,
+  .btn-pdf,
+  .btn-save,
+  .save-feedback,
+  .product-link {
     display: none !important;
   }
 
-  .sidebar {
-    position: static;
-  }
-
-  .results-layout {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .product-card {
-    break-inside: avoid;
-    opacity: 1;
-    transform: none;
-    animation: none;
+  * {
+    box-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
   }
 
   body {
-    background: white;
+    background: white !important;
+    font-size: 11pt;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .results-layout {
+    display: block !important;
+  }
+
+  .sidebar {
+    position: static !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .card {
+    border: 1px solid #ddd !important;
+    padding: 16px !important;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .product-card {
+    break-inside: avoid !important;
+    opacity: 1 !important;
+    transform: none !important;
+    border: 1px solid #ddd !important;
+  }
+
+  .product-img {
+    display: none !important;
+  }
+
+  .product-body {
+    padding: 12px !important;
   }
 }
