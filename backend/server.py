@@ -4,9 +4,14 @@ from flask_cors import CORS
 import requests
 from recommender_tfidf import rec_hybrid, products as _all_products
 
-from skin_analyzer import analyze_image
 import os
 import uuid
+
+try:
+    from skin_analyzer import analyze_image
+    YOLO_AVAILABLE = True
+except Exception:
+    YOLO_AVAILABLE = False
 
 # Filter out delisted products (marked by mark_delisted.py).
 # "active" defaults to True for products not yet checked.
@@ -127,6 +132,11 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
+    if not YOLO_AVAILABLE:
+        return jsonify({
+            'error': 'AI scan is not available in the deployed version. Run locally to use this feature.'
+        }), 503
+
     if 'image' not in request.files:
         return jsonify({'error': 'No image provided'}), 400
 
@@ -134,7 +144,6 @@ def analyze():
     if file.filename == '':
         return jsonify({'error': 'Empty filename'}), 400
 
-    # Save with unique name to avoid collisions
     ext = os.path.splitext(file.filename)[1].lower()
     unique_name = f"{uuid.uuid4().hex}{ext}"
     save_path = os.path.join(UPLOAD_FOLDER, unique_name)

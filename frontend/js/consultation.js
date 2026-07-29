@@ -292,6 +292,16 @@ skinImageInput.addEventListener('change', async () => {
       // No Content-Type header — browser sets it automatically with FormData
     });
 
+    if (res.status === 503) {
+      // AI not available in deployed version — fall back to manual score
+      scanStatus.hidden = true;
+      document.getElementById('backFromScan').disabled = false;
+      const errEl = document.createElement('p');
+      errEl.className = 'fetch-error';
+      errEl.textContent = "AI scan isn't available in the live demo. Your quiz scores will be used instead.";
+      scanStatus.after(errEl);
+      return;
+    }
     if (!res.ok) throw new Error(`Server error ${res.status}`);
 
     const data = await res.json();
