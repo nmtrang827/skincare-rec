@@ -259,8 +259,66 @@ async function fetchAndNavigate() {
 }
 
 // ── Step 4 listeners ──────────────────────────────────────────
+// ── Skip scan — use scores as-is ─────────────────────────────
 document.getElementById('skipAI').addEventListener('click', fetchAndNavigate);
-document.getElementById('chooseAI').addEventListener('click', fetchAndNavigate); // AI wired later
+
+// ── AI scan — file picker + YOLO inference ────────────────────
+const skinImageInput = document.getElementById('skinImageInput');
+const scanStatus     = document.getElementById('scanStatus');
+const scanStatusText = document.getElementById('scanStatusText');
+
+// Clicking the card triggers the hidden file input
+document.getElementById('chooseAI').addEventListener('click', () => {
+  skinImageInput.click();
+});
+
+// When user picks a file, run inference
+skinImageInput.addEventListener('change', async () => {
+  const file = skinImageInput.files[0];
+  if (!file) return;
+
+  // Show loading state, disable back button
+  scanStatus.hidden = false;
+  scanStatusText.textContent = 'Analysing your skin…';
+  document.getElementById('backFromScan').disabled = true;
+
+  try {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const res = await fetch('http://127.0.0.1:5000/analyze', {
+      method: 'POST',
+      body: formData,
+      // No Content-Type header — browser sets it automatically with FormData
+    });
+
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
+
+    const data = await res.json();
+
+    // Merge AI result into state — overrides the quiz/manual acne score
+    state.concernScores.Acne_Severity = data.acne_severity;
+
+    scanStatusText.textContent =
+      `Detected ${data.lesion_count} lesion${data.lesion_count !== 1 ? 's' : ''} — acne severity set to ${data.acne_severity}/10`;
+
+    // Small pause so user can read the result before navigating
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    fetchAndNavigate();
+
+  } catch (err) {
+    scanStatus.hidden = true;
+    document.getElementById('backFromScan').disabled = false;
+
+    const errEl = document.createElement('p');
+    errEl.className = 'fetch-error';
+    errEl.textContent = "Couldn't analyse the image. Try again or skip the scan.";
+    scanStatus.after(errEl);
+
+    console.error(err);
+  }
+});
 
 // ── Init ─────────────────────────────────────────────────────
 // If a ?step= param exists (e.g. from results.html), jump there.

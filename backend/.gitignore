@@ -1,5 +1,5 @@
 # .gitignore
-backend/ml/*.pt       
+backend/model/*.pt       
 backend/static/uploads/ 
 *.cache
 runs/
