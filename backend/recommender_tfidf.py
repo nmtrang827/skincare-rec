@@ -5,8 +5,13 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 # ── Load products ─────────────────────────────────────────────────────────────
 import os
-_data_path = os.path.join(os.path.dirname(__file__), "data", "products.json")
+
+_data_path = os.path.join(os.path.dirname(__file__), "..", "data", "products.json")
 _data_path = os.path.normpath(_data_path)
+
+if not os.path.exists(_data_path):
+    _data_path = os.path.join(os.path.dirname(__file__), "data", "products.json")
+    _data_path = os.path.normpath(_data_path)
 
 with open(_data_path, "r", encoding="utf-8") as f:
     products = json.load(f)

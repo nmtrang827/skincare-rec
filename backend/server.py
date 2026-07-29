@@ -6,6 +6,14 @@ from recommender_tfidf import rec_hybrid, products as _all_products
 
 import os
 import uuid
+import json
+import psycopg2
+from dotenv import load_dotenv
+
+load_dotenv()
+
+def get_db():
+    return psycopg2.connect(os.getenv("DATABASE_URL"))
 
 try:
     from skin_analyzer import analyze_image
@@ -155,6 +163,60 @@ def analyze():
     finally:
         if os.path.exists(save_path):
             os.remove(save_path)
+
+@app.route("/save_results", methods=["POST"])
+def save_results():
+    data = request.json
+    profile  = data.get("profile")
+    products = data.get("products")
+
+    if not profile or not products:
+        return jsonify({"error": "Missing profile or products"}), 400
+
+    # Generate a short readable ID — 8 chars is enough for a portfolio project
+    result_id = uuid.uuid4().hex[:8]
+
+    try:
+        conn = get_db()
+        cur  = conn.cursor()
+        cur.execute(
+            "INSERT INTO consultations (id, profile, products) VALUES (%s, %s, %s)",
+            (result_id, json.dumps(profile), json.dumps(products))
+        )
+        conn.commit()
+        cur.close()
+        conn.close()
+        return jsonify({"id": result_id})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/results/<result_id>", methods=["GET"])
+def get_results(result_id):
+    try:
+        conn = get_db()
+        cur  = conn.cursor()
+        cur.execute(
+            "SELECT profile, products, created_at FROM consultations WHERE id = %s",
+            (result_id,)
+        )
+        row = cur.fetchone()
+        cur.close()
+        conn.close()
+
+        if not row:
+            return jsonify({"error": "Results not found"}), 404
+
+        profile, products, created_at = row
+        return jsonify({
+            "profile":    profile,
+            "products":   products,
+            "created_at": created_at.isoformat(),
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,7 +1,4 @@
-// results.js
-// Reads from sessionStorage, renders the dashboard.
-// No fetch calls here — data was already fetched by consultation.js.
-
+import { API_BASE } from './api.js';
 import { CONCERN_TO_INGREDIENTS } from './ingredientMap.js';
 
 // ── Constants ─────────────────────────────────────────────────
@@ -26,19 +23,39 @@ const CONCERN_LABELS = {
 };
 
 // ── Read sessionStorage ───────────────────────────────────────
-// If either key is missing, the user landed here directly.
-// Send them back to the consultation instead of showing a broken page.
-const raw = {
-  results: sessionStorage.getItem('skincare_results'),
-  profile: sessionStorage.getItem('skincare_profile'),
-};
+const params = new URLSearchParams(window.location.search);
+const sharedId = params.get('id');
 
-if (!raw.results || !raw.profile) {
-  window.location.href = 'consultation.html';
+let products, profile;
+
+if (sharedId) {
+  // Load from database via shared link
+  try {
+    const res = await fetch(`${API_BASE}/results/${sharedId}`);
+    if (!res.ok) throw new Error('Not found');
+    const data = await res.json();
+    products = data.products;
+    profile = data.profile;
+  } catch (err) {
+    document.body.innerHTML = `
+      <div style="text-align:center; padding: 80px 20px; color: #6B7A8D;">
+        <p style="font-size: 1.1rem; margin-bottom: 16px;">Results not found or expired.</p>
+        <a href="consultation.html" style="color: #C084A0;">Start a new consultation →</a>
+      </div>`;
+    throw err;
+  }
+} else {
+  // Load from sessionStorage (normal flow)
+  const raw = {
+    results: sessionStorage.getItem('skincare_results'),
+    profile: sessionStorage.getItem('skincare_profile'),
+  };
+  if (!raw.results || !raw.profile) {
+    window.location.href = 'consultation.html';
+  }
+  products = JSON.parse(raw.results);
+  profile = JSON.parse(raw.profile);
 }
-
-const products = JSON.parse(raw.results);
-const profile = JSON.parse(raw.profile);
 
 // ── Derive recommended ingredients from profile ───────────────
 // For each concern where severity > 2, collect its ingredient list.
@@ -120,7 +137,7 @@ function renderProducts(products) {
     const fallback = FALLBACK_IMAGES[product.type] || FALLBACK_IMAGES["Other"];
     const rawImage = product.image_url || "";
     const imageUrl = (rawImage && !rawImage.includes("unsplash.com"))
-      ? `https://skincare-rec.onrender.com/proxy-image?url=${encodeURIComponent(rawImage)}`
+      ? `${API_BASE}/proxy-image?url=${encodeURIComponent(rawImage)}`
       : fallback;
 
     const rawPrice = String(product.price).trim();
@@ -180,7 +197,7 @@ refreshBtn.addEventListener('click', async () => {
   };
 
   try {
-    const res = await fetch('https://skincare-rec.onrender.com/recommend_tfidf', {
+    const res = await fetch(`${API_BASE}/recommend_tfidf`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedProfile),
@@ -202,6 +219,48 @@ refreshBtn.addEventListener('click', async () => {
     refreshBtn.disabled = false;
     refreshBtn.textContent = 'Refresh products →';
   }
+});
+
+// ── Save results + get shareable link ────────────────────────
+const saveBtn = document.getElementById('saveResults');
+const saveFeedback = document.getElementById('saveFeedback');
+
+saveBtn.addEventListener('click', async () => {
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving…';
+
+  try {
+    const res = await fetch(`${API_BASE}/save_results`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ profile, products }),
+    });
+
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
+
+    const data = await res.json();
+    const link = `${window.location.origin}/results.html?id=${data.id}`;
+
+    // Copy link to clipboard
+    await navigator.clipboard.writeText(link);
+
+    saveFeedback.hidden = false;
+    saveFeedback.textContent = `Link copied to clipboard`;
+    saveBtn.textContent = 'Link copied ✓';
+
+  } catch (err) {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Save & get link';
+    saveFeedback.hidden = false;
+    saveFeedback.style.color = '#E53E3E';
+    saveFeedback.textContent = 'Could not save. Try again.';
+    console.error(err);
+  }
+});
+
+// ── PDF download ──────────────────────────────────────────────
+document.getElementById('downloadPdf').addEventListener('click', () => {
+  window.print();
 });
 
 // ── Init ──────────────────────────────────────────────────────

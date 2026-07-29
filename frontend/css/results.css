@@ -399,3 +399,64 @@
 .back-to-consultation:hover {
   color: var(--blush);
 }
+
+/* ── Results actions ──────────────────────────────────────────── */
+.results-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: #1E2A3A;
+  color: #ffffff;
+  border: none;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-save:hover {
+  background: #2D3E52;
+  transform: translateY(-1px);
+}
+
+.btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: transparent;
+  color: #4A5568;
+  border: 1.5px solid #DDE0E6;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-pdf:hover {
+  border-color: #C084A0;
+  color: #C084A0;
+}
+
+.save-feedback {
+  font-size: 0.82rem;
+  color: #4A9B7F;
+  margin-top: -8px;
+}

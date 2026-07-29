@@ -1,9 +1,9 @@
-// api.js — single source of truth for backend communication
-// Import this in any page that talks to Flask.
+const IS_LOCAL = window.location.hostname === '127.0.0.1'
+  || window.location.hostname === 'localhost';
 
-// ── Config ───────────────────────────────────────────────────
-// Change this ONE line when you deploy. Nowhere else.
-const API_BASE = 'http://127.0.0.1:5000';
+export const API_BASE = IS_LOCAL
+  ? 'http://127.0.0.1:5000'
+  : 'https://skincare-rec.onrender.com';
 
 // ── Fetch recommendations ────────────────────────────────────
 // Takes a user profile object, returns a promise of product results.
@@ -21,3 +21,4 @@ async function fetchRecommendations(userProfile) {
 
   return response.json();
 }
+
