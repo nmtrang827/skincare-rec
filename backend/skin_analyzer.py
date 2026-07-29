@@ -1,8 +1,7 @@
 from ultralytics import YOLO
 import os
 
-# Load model once when the module is imported
-# so it doesn't reload on every request
+# Load model once when the module is imported so it doesn't reload on every request
 MODEL_PATH = os.path.join(os.path.dirname(__file__), 'model', 'best.pt')
 model = YOLO(MODEL_PATH)
 

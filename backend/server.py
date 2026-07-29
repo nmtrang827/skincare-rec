@@ -67,13 +67,10 @@ def recommend_tfidf():
     results = []
 
     for product, score in recommendations:
-        # BUG FIX: active_ingredients key doesn't exist in products.json.
-        # Parse it from clean_ingreds instead.
         active_ingredients = extract_active_ingredients(
             product.get("clean_ingreds", "[]")
         )
 
-        # BUG FIX: Use real image_url from data; fall back to a generic only if missing.
         image_url = product.get("image_url", "")
         if not image_url:
             image_url = "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=300&fit=crop&crop=center"
