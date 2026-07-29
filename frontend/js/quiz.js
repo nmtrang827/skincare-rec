@@ -54,11 +54,11 @@ export const quiz = [
         question: "By the middle of the day, how shiny does your face usually become?",
 
         answers: [
-            { text: "Very shiny", value: 0 },
-            { text: "Somewhat shiny", value: 2 },
-            { text: "A little shiny", value: 5 },
-            { text: "Barely shiny", value: 8 },
             { text: "Never shiny", value: 10 }
+            { text: "Barely shiny", value: 8 },
+            { text: "A little shiny", value: 5 },
+            { text: "Somewhat shiny", value: 2 },
+            { text: "Very shiny", value: 0 },
         ]
     },
 
