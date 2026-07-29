@@ -141,6 +141,9 @@ function fillConcernSliders() {
   sensitivityValue.textContent = sensitivitySlider.value;
   pigmentationValue.textContent = pigmentationSlider.value;
   agingValue.textContent = agingSlider.value;
+
+  budgetSlider.value = state.priceMax;
+  budgetValue.textContent = `£${state.priceMax}`;
 }
 
 // ── Step 1: path selection ───────────────────────────────────
@@ -331,12 +334,26 @@ skinImageInput.addEventListener('change', async () => {
 });
 
 // ── Init ─────────────────────────────────────────────────────
-// If a ?step= param exists (e.g. from results.html), jump there.
-// Otherwise default to step 1.
 const params = new URLSearchParams(window.location.search);
 const startStep = parseInt(params.get('step'));
+
+// If coming back from results, restore saved profile
+const savedProfile = sessionStorage.getItem('skincare_profile');
+if (savedProfile && startStep === 3) {
+  const p = JSON.parse(savedProfile);
+  state.concernScores.Acne_Severity = p.Acne_Severity ?? 0;
+  state.concernScores.Dryness_Severity = p.Dryness_Severity ?? 0;
+  state.concernScores.Sensitivity_Severity = p.Sensitivity_Severity ?? 0;
+  state.concernScores.Pigmentation_Severity = p.Pigmentation_Severity ?? 0;
+  state.concernScores.Aging_Severity = p.Aging_Severity ?? 0;
+  state.priceMax = p.Price_Max ?? 230;
+}
+
 if (startStep && startStep >= 1 && startStep <= state.totalSteps) {
   goToStep(startStep);
+  if (startStep === 3) {
+    fillConcernSliders();
+  }
 } else {
   goToStep(1);
 }
