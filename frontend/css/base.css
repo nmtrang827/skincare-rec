@@ -279,3 +279,41 @@ main,
 .container {
   flex: 1;
 }
+
+
+/* ── Print styles ─────────────────────────────────────────────
+@media print {
+  .nav,
+  .results-actions,
+  .back-to-consultation,
+  .btn-refresh,
+  .budget-slider,
+  .slider-bounds,
+  .footer {
+    display: none !important;
+  }
+
+  .sidebar {
+    position: static;
+  }
+
+  .results-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .product-card {
+    break-inside: avoid;
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  body {
+    background: white;
+  }
+}
